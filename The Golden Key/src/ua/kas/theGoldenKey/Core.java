@@ -25,6 +25,8 @@ public class Core extends Applet implements Runnable {
 
 	private Image screen;
 
+	public Level level;
+
 	public static Dimension screenSize = new Dimension(700, 560);
 	public static Dimension pixel = new Dimension(screenSize.width, screenSize.height);
 	public static Dimension Size;
@@ -37,6 +39,7 @@ public class Core extends Applet implements Runnable {
 
 	public static void main(String[] args) {
 		Core core = new Core();
+
 		frame = new JFrame();
 		frame.add(core);
 		frame.pack();
@@ -56,6 +59,8 @@ public class Core extends Applet implements Runnable {
 		requestFocus();
 
 		// define classes
+		level = new Level(1);
+		new Tile();
 
 		run = true;
 		new Thread(this).start();
@@ -66,41 +71,56 @@ public class Core extends Applet implements Runnable {
 	}
 
 	public void tick() {
+		// frame.pack();
 
+		level.tick();
 	}
 
 	public void render() {
 
 		Graphics g = screen.getGraphics();
+		level.render(g, (int) oX, (int) oY, (pixel.width / Tile.size) + 2, (pixel.height / Tile.size) + 2);
 
 		g = this.getGraphics();
 		g.drawImage(screen, 0, 0, screenSize.width, screenSize.height, 0, 0, pixel.width, pixel.height, null);
+
 		g.dispose();
 	}
 
 	@Override
 	public void run() {
+
 		screen = createVolatileImage(pixel.width, pixel.height);
 
 		while (run) {
 
-			long start = System.nanoTime();
-
 			tick();
+			System.out.println("after render");
 			render();
-
-			long elapsed = System.nanoTime();
-			long wait = (1000 / targetFPS) - elapsed / 1000000;
-
-			if (wait < 0) {
-				wait = 5;
-			}
-
+			System.out.println("before render");
 			try {
-				Thread.sleep(wait);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.sleep(5);
+			} catch (Exception e) {
+				System.out.println("Sleeping thread Error!");
 			}
+
+			// long start = System.nanoTime();
+			//
+			// tick();
+			// render();
+			//
+			// long elapsed = System.nanoTime();
+			// long wait = (1000 / targetFPS) - elapsed / 1000000;
+			//
+			// if (wait < 0) {
+			// wait = 5;
+			// }
+			//
+			// try {
+			// Thread.sleep(wait);
+			// } catch (InterruptedException e) {
+			// e.printStackTrace();
+			// }
 		}
 	}
 }
