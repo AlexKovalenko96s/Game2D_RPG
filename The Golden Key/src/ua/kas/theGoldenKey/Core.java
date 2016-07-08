@@ -12,16 +12,24 @@ public class Core extends Applet implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private static JFrame frame;
+
 	public static final int res = 1;
+
 	public static double oY = 0, oX = 0;
+
 	public static int dir = 0;
-	public static boolean moving = false, run = false;
+	public int targetFPS = 5;
+
+	public static boolean moving = false;
+	public static boolean run = false;
+
 	private Image screen;
+
 	public static Dimension screenSize = new Dimension(700, 560);
 	public static Dimension pixel = new Dimension(screenSize.width, screenSize.height);
 	public static Dimension Size;
+
 	public static String name = "The Golden Key";
-	public int targetFPS = 5;
 
 	public Core() {
 		setPreferredSize(screenSize);
