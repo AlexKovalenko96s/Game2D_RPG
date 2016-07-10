@@ -25,6 +25,7 @@ public class Core extends Applet implements Runnable {
 
 	private Image screen;
 
+	public static Player player;
 	public Level level;
 
 	public static Dimension screenSize = new Dimension(700, 560);
@@ -60,6 +61,7 @@ public class Core extends Applet implements Runnable {
 
 		// define classes
 		level = new Level(1);
+		player = new Player("Alex");
 		new Tile();
 
 		run = true;
@@ -71,7 +73,7 @@ public class Core extends Applet implements Runnable {
 	}
 
 	public void tick() {
-		// frame.pack();
+		frame.pack();
 
 		level.tick();
 	}
@@ -95,9 +97,7 @@ public class Core extends Applet implements Runnable {
 		while (run) {
 
 			tick();
-			System.out.println("after render");
 			render();
-			System.out.println("before render");
 			try {
 				Thread.sleep(5);
 			} catch (Exception e) {

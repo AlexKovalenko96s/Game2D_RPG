@@ -11,6 +11,8 @@ public class Level {
 	public int width = 100, height = 100;
 
 	public Background[][] bg = new Background[width][height];
+	public Solid[][] solid = new Solid[width][height];
+	public Item[][] item = new Item[width][height];
 
 	public final String Dpath = "res/World/level_";
 	public String path = Dpath;
@@ -31,6 +33,8 @@ public class Level {
 			for (int y = 0; y < bg[0].length; y++) {
 				bg[x][y] = new Background(new Rectangle(x * Tile.size, y * Tile.size, Tile.size, Tile.size),
 						Tile.blank);
+				solid[x][y] = new Solid(new Rectangle(x * Tile.size, y * Tile.size, Tile.size, Tile.size), Tile.blank);
+				item[x][y] = new Item(new Rectangle(x * Tile.size, y * Tile.size, Tile.size, Tile.size), Tile.blank);
 			}
 		}
 
@@ -41,7 +45,7 @@ public class Level {
 	public void loadWorld() {
 		int background = map.getLayerIndex("background");
 		int solids = map.getLayerIndex("collision");
-		int item = map.getLayerIndex("object");
+		int items = map.getLayerIndex("object");
 
 		for (int x = 0; x < bg.length; x++) {
 			for (int y = 0; y < bg[0].length; y++) {
@@ -61,7 +65,15 @@ public class Level {
 
 				// solids
 
+				if (map.getTileId(x, y, solids) == 65) {
+					solid[x][y].id = Tile.grass;
+				}
+
 				// items
+
+				if (map.getTileId(x, y, items) == 129) {
+					item[x][y].id = Tile.grass;
+				}
 			}
 		}
 	}
