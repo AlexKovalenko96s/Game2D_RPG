@@ -1,5 +1,6 @@
 package ua.kas.theGoldenKey;
 
+import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Player extends Rectangle {
@@ -7,6 +8,8 @@ public class Player extends Rectangle {
 	private static final long serialVersionUID = 1L;
 
 	public double moveSpeed = 1.0;
+
+	public static int[] pImg = { 0, 0 };
 
 	public static boolean isMoving = false;
 	public static boolean up = false;
@@ -25,5 +28,25 @@ public class Player extends Rectangle {
 
 	public void tick() {
 
+		if (up) {
+			Core.oY -= moveSpeed;
+		}
+		if (down) {
+			Core.oY += moveSpeed;
+		}
+		if (left) {
+			Core.oX -= moveSpeed;
+		}
+		if (right) {
+			Core.oX += moveSpeed;
+		}
+	}
+
+	public void render(Graphics g) {
+
+		if (aniFrame == 1) {
+			g.drawImage(Tile.characters, this.x, this.y, x + width, y + height, pImg[0] * Tile.size,
+					pImg[1] * Tile.size, pImg[0] * Tile.size + Tile.size, pImg[1] * Tile.size + Tile.size, null);
+		}
 	}
 }

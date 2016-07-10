@@ -36,6 +36,7 @@ public class Core extends Applet implements Runnable {
 
 	public Core() {
 		setPreferredSize(screenSize);
+		addKeyListener(new InputManager());
 	}
 
 	public static void main(String[] args) {
@@ -74,7 +75,7 @@ public class Core extends Applet implements Runnable {
 
 	public void tick() {
 		frame.pack();
-
+		player.tick();
 		level.tick();
 	}
 
@@ -82,6 +83,8 @@ public class Core extends Applet implements Runnable {
 
 		Graphics g = screen.getGraphics();
 		level.render(g, (int) oX, (int) oY, (pixel.width / Tile.size) + 2, (pixel.height / Tile.size) + 2);
+
+		player.render(g);
 
 		g = this.getGraphics();
 		g.drawImage(screen, 0, 0, screenSize.width, screenSize.height, 0, 0, pixel.width, pixel.height, null);
@@ -96,31 +99,31 @@ public class Core extends Applet implements Runnable {
 
 		while (run) {
 
-			tick();
-			render();
-			try {
-				Thread.sleep(5);
-			} catch (Exception e) {
-				System.out.println("Sleeping thread Error!");
-			}
-
-			// long start = System.nanoTime();
-			//
 			// tick();
 			// render();
-			//
-			// long elapsed = System.nanoTime();
-			// long wait = (1000 / targetFPS) - elapsed / 1000000;
-			//
-			// if (wait < 0) {
-			// wait = 5;
-			// }
-			//
 			// try {
-			// Thread.sleep(wait);
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
+			// Thread.sleep(5);
+			// } catch (Exception e) {
+			// System.out.println("Sleeping thread Error!");
 			// }
+
+			long start = System.nanoTime();
+
+			tick();
+			render();
+
+			long elapsed = System.nanoTime();
+			long wait = (1000 / targetFPS) - elapsed / 1000000;
+
+			if (wait < 0) {
+				wait = 5;
+			}
+
+			try {
+				Thread.sleep(wait);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
