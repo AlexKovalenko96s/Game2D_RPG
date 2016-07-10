@@ -78,7 +78,7 @@ public class Level {
 		}
 	}
 
-	public void tick() {
+	public void tick(double delta) {
 
 	}
 

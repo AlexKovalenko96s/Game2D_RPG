@@ -1,5 +1,6 @@
 package ua.kas.theGoldenKey;
 
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
