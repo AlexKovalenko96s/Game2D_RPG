@@ -1,9 +1,8 @@
 package ua.kas.theGoldenKey;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
-public class Player extends Rectangle {
+public class Player extends Entity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,14 +19,18 @@ public class Player extends Rectangle {
 	public static boolean left = false;
 	public static boolean right = false;
 
+	private Core GK;
+
 	public int aniFrame = 0;
 	public int aniTime = 10;
 	public int aniDelta = 0;
 
-	public Player(String name) {
-		width = 32;
-		height = 32;
-		setBounds((Core.pixel.width / 2) - (width / 2), (Core.pixel.height / 2) - (height / 2), width, height);
+	public Player(Core GK, double x, double y, int width, int height) {
+		super(new int[] { 0, 0 }, x, y, width, height);
+		moveSpeed = 1.8;
+		health = 110;
+		// setBounds((Core.pixel.width / 2) - (width / 2), (Core.pixel.height /
+		// 2) - (height / 2), width, height);
 	}
 
 	public void tick(double delta) {
