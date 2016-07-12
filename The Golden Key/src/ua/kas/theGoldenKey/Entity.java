@@ -29,7 +29,6 @@ public abstract class Entity {
 		this.height = height;
 		moveSpeed = 1.8;
 		health = 100;
-		id = i;
 		me = new Rectangle((int) x, (int) y, width, height);
 	}
 

@@ -32,8 +32,9 @@ public class Core extends Applet implements Runnable {
 
 	private Image screen;
 
-	public static Player player;
+	public static EntityPlayer player;
 	public Level level;
+	public static Core core;
 
 	public static Dimension screenSize = new Dimension(700, 560);
 	public static Dimension pixel = new Dimension(screenSize.width, screenSize.height);
@@ -47,7 +48,7 @@ public class Core extends Applet implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		Core core = new Core();
+		core = new Core();
 
 		frame = new JFrame();
 		frame.add(core);
@@ -69,7 +70,7 @@ public class Core extends Applet implements Runnable {
 
 		// define classes
 		level = new Level(1);
-		player = new Player("Alex");
+		player = new EntityPlayer(core, 0, 0, 32, 32);
 		new Tile();
 
 		run = true;
