@@ -17,10 +17,12 @@ public class Board extends JPanel implements ActionListener {
 
 	private Timer timer;
 
+	private Trap t;
 	private Map m;
 	private Player p;
 
 	private boolean win = false;
+	private boolean fail = false;
 
 	private String message = " ";
 
@@ -30,6 +32,7 @@ public class Board extends JPanel implements ActionListener {
 
 		m = new Map();
 		p = new Player();
+		t = new Trap();
 		addKeyListener(new Al());
 		setFocusable(true);
 
@@ -43,12 +46,26 @@ public class Board extends JPanel implements ActionListener {
 			message = "Finish!";
 			win = true;
 		}
+		if (p.getTileX() == t.getTileX() && p.getTileY() == t.getTileY()) {
+			message = "Fail!";
+			fail = true;
+		}
+
+		// Trap moving
+
+		System.out.println("---------" + t.getTileX());
+		try {
+			t.move();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		repaint();
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (!win) {
+		if (!win && !fail) {
 			for (int y = 0; y < 14; y++) {
 				for (int x = 0; x < 14; x++) {
 					if (m.getMap(x, y).equals("g")) {
@@ -64,9 +81,10 @@ public class Board extends JPanel implements ActionListener {
 			}
 
 			g.drawImage(p.getPlayer(), p.getTileX() * 32, p.getTileY() * 32, null);
+			g.drawImage(t.getTrap(), t.getTileX() * 32, t.getTileY() * 32, null);
 
 		}
-		if (win) {
+		if (win || fail) {
 
 			g.setColor(Color.ORANGE);
 			g.setFont(font);
