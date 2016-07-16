@@ -8,6 +8,8 @@ public class Trap {
 
 	private int tileX, tileY;
 
+	private boolean end = false, step = false;
+
 	private Image trap;
 
 	public Trap() {
@@ -31,22 +33,31 @@ public class Trap {
 		return trap;
 	}
 
-	public void move() throws InterruptedException {
+	public boolean getStep() {
+		return step;
+	}
 
-		System.out.println(tileX);
+	public void move() {
 
-		if (tileX == 1) {
-			for (int i = tileX; i < 7; i++) {
-				Thread t1 = null;
-				t1.sleep(100);
-				tileX += 1;
+		// try {
+		// Thread.currentThread().sleep(50);
+		// } catch (InterruptedException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
+		if (!end) {
+			tileX++;
+			if (tileX == 8) {
+				end = true;
 			}
 		}
-		if (tileX == 7) {
-			for (int i = tileX; i > 1; i--) {
-				Thread t2 = null;
-				t2.sleep(100);
-				tileX -= 1;
+
+		if (end) {
+			if (tileX == 1) {
+				end = false;
+			} else {
+				tileX--;
 			}
 		}
 	}

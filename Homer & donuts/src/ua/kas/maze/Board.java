@@ -53,13 +53,14 @@ public class Board extends JPanel implements ActionListener {
 
 		// Trap moving
 
-		System.out.println("---------" + t.getTileX());
 		try {
-			t.move();
+			Thread.currentThread().sleep(50);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
+		t.move();
+
 		repaint();
 	}
 
