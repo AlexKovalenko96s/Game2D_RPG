@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -20,6 +21,9 @@ public class Board extends JPanel implements ActionListener {
 	private Trap t;
 	private Map m;
 	private Player p;
+	private Burns b;
+
+	private Random random = new Random();
 
 	private boolean win = false;
 	private boolean fail = false;
@@ -31,8 +35,10 @@ public class Board extends JPanel implements ActionListener {
 	public Board() {
 
 		m = new Map();
+		b = new Burns();
 		p = new Player();
 		t = new Trap();
+
 		addKeyListener(new Al());
 		setFocusable(true);
 
@@ -46,20 +52,48 @@ public class Board extends JPanel implements ActionListener {
 			message = "Finish!";
 			win = true;
 		}
-		if (p.getTileX() == t.getTileX() && p.getTileY() == t.getTileY()) {
+		if ((p.getTileX() == t.getTileX() && p.getTileY() == t.getTileY())
+				|| p.getTileX() == b.getTileX() && p.getTileY() == b.getTileY()) {
 			message = "Fail!";
 			fail = true;
 		}
 
-		// Trap moving
-
 		try {
-			Thread.currentThread().sleep(50);
+			Thread.currentThread().sleep(60);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
 
+		// Trap moving
 		t.move();
+
+		// Burns moving
+
+		int r = random.nextInt(4);
+
+		if (r == 0) {
+			if (!m.getMap(b.getTileX(), b.getTileY() - 1).equals("w")) {
+				b.move(0, -1);
+			}
+		}
+
+		if (r == 1) {
+			if (!m.getMap(b.getTileX(), b.getTileY() + 1).equals("w")) {
+				b.move(0, 1);
+			}
+		}
+
+		if (r == 2) {
+			if (!m.getMap(b.getTileX() - 1, b.getTileY()).equals("w")) {
+				b.move(-1, 0);
+			}
+		}
+
+		if (r == 3) {
+			if (!m.getMap(b.getTileX() + 1, b.getTileY()).equals("w")) {
+				b.move(1, 0);
+			}
+		}
 
 		repaint();
 	}
@@ -83,6 +117,7 @@ public class Board extends JPanel implements ActionListener {
 
 			g.drawImage(p.getPlayer(), p.getTileX() * 32, p.getTileY() * 32, null);
 			g.drawImage(t.getTrap(), t.getTileX() * 32, t.getTileY() * 32, null);
+			g.drawImage(b.getBurns(), b.getTileX() * 32, b.getTileY() * 32, null);
 
 		}
 		if (win || fail) {

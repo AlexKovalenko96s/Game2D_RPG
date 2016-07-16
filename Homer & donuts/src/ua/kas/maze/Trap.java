@@ -39,13 +39,6 @@ public class Trap {
 
 	public void move() {
 
-		// try {
-		// Thread.currentThread().sleep(50);
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
 		if (!end) {
 			tileX++;
 			if (tileX == 8) {
