@@ -59,7 +59,8 @@ public class Board extends JPanel implements ActionListener {
 		}
 
 		try {
-			Thread.currentThread().sleep(60);
+			Thread.currentThread();
+			Thread.sleep(60);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
