@@ -66,6 +66,7 @@ public class Board extends JPanel implements ActionListener {
 		}
 
 		// Trap moving
+
 		t.move();
 
 		// Burns moving
@@ -73,25 +74,29 @@ public class Board extends JPanel implements ActionListener {
 		int r = random.nextInt(4);
 
 		if (r == 0) {
-			if (!m.getMap(b.getTileX(), b.getTileY() - 1).equals("w")) {
+			if (!m.getMap(b.getTileX(), b.getTileY() - 1).equals("w")
+					&& !m.getMap(b.getTileX(), b.getTileY() - 1).equals("d")) {
 				b.move(0, -1);
 			}
 		}
 
 		if (r == 1) {
-			if (!m.getMap(b.getTileX(), b.getTileY() + 1).equals("w")) {
+			if (!m.getMap(b.getTileX(), b.getTileY() + 1).equals("w")
+					&& !m.getMap(b.getTileX(), b.getTileY() + 1).equals("d")) {
 				b.move(0, 1);
 			}
 		}
 
 		if (r == 2) {
-			if (!m.getMap(b.getTileX() - 1, b.getTileY()).equals("w")) {
+			if (!m.getMap(b.getTileX() - 1, b.getTileY()).equals("w")
+					&& !m.getMap(b.getTileX() - 1, b.getTileY()).equals("d")) {
 				b.move(-1, 0);
 			}
 		}
 
 		if (r == 3) {
-			if (!m.getMap(b.getTileX() + 1, b.getTileY()).equals("w")) {
+			if (!m.getMap(b.getTileX() + 1, b.getTileY()).equals("w")
+					&& !m.getMap(b.getTileX() + 1, b.getTileY()).equals("d")) {
 				b.move(1, 0);
 			}
 		}
