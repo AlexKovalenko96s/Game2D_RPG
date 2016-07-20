@@ -5,11 +5,11 @@ import java.awt.Graphics;
 import ua.kas.superMario.Handler;
 import ua.kas.superMario.Id;
 
-public class Tile {
+public abstract class Tile {
 
-	private int x, y;
-	private int width, height;
-	private int velX, velY;
+	public int x, y;
+	public int width, height;
+	public int velX, velY;
 
 	private boolean solid;
 
@@ -27,15 +27,9 @@ public class Tile {
 		this.handler = handler;
 	}
 
-	public void render(Graphics g) {
+	public abstract void render(Graphics g);
 
-	}
-
-	public void tick() {
-
-		x += velX;
-		y += velY;
-	}
+	public abstract void tick();
 
 	public void die() {
 

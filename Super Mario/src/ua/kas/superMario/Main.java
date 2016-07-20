@@ -8,6 +8,9 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import ua.kas.superMario.entity.Player;
+import ua.kas.superMario.input.KeyInput;
+
 public class Main extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,6 +24,25 @@ public class Main extends Canvas implements Runnable {
 	private boolean running = false;
 
 	private Thread thread;
+
+	public static Handler handler;
+
+	public Main() {
+
+		Dimension size = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
+		setPreferredSize(size);
+		setMaximumSize(size);
+		setMinimumSize(size);
+	}
+
+	private void init() {
+
+		handler = new Handler();
+
+		addKeyListener(new KeyInput());
+
+		handler.addEntity(new Player(370, 506, 64, 64, true, Id.Player, handler));
+	}
 
 	private synchronized void start() {
 
@@ -50,6 +72,11 @@ public class Main extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+
+		init();
+
+		requestFocus();
+
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
 
@@ -106,20 +133,16 @@ public class Main extends Canvas implements Runnable {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.YELLOW);
 		g.fillRect(200, 200, getWidth() - 400, getHeight() - 400);
+
+		handler.render(g);
+
 		g.dispose();
 		bs.show();
 	}
 
 	public void tick() {
 
-	}
-
-	public Main() {
-
-		Dimension size = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
-		setPreferredSize(size);
-		setMaximumSize(size);
-		setMinimumSize(size);
+		handler.tick();
 	}
 
 	public static void main(String[] args) {
