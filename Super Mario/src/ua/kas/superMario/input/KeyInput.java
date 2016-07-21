@@ -17,12 +17,15 @@ public class KeyInput implements KeyListener {
 
 			switch (key) {
 			case KeyEvent.VK_W:
-				en.setVelY(-5);
+				if (!en.jumping) {
+					en.jumping = true;
+					en.gravity = 10.0;
+				}
 				break;
 
-			case KeyEvent.VK_S:
-				en.setVelY(5);
-				break;
+			// case KeyEvent.VK_S:
+			// en.setVelY(5);
+			// break;
 
 			case KeyEvent.VK_A:
 				en.setVelX(-5);
@@ -47,9 +50,9 @@ public class KeyInput implements KeyListener {
 				en.setVelY(0);
 				break;
 
-			case KeyEvent.VK_S:
-				en.setVelY(0);
-				break;
+			// case KeyEvent.VK_S:
+			// en.setVelY(0);
+			// break;
 
 			case KeyEvent.VK_A:
 				en.setVelX(0);

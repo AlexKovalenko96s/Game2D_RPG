@@ -5,11 +5,17 @@ import java.util.LinkedList;
 
 import ua.kas.superMario.entity.Entity;
 import ua.kas.superMario.tile.Tile;
+import ua.kas.superMario.tile.Wall;
 
 public class Handler {
 
 	public LinkedList<Entity> entity = new LinkedList<Entity>();
 	public LinkedList<Tile> tile = new LinkedList<Tile>();
+
+	public Handler() {
+
+		createLevel();
+	}
 
 	public void render(Graphics g) {
 
@@ -47,5 +53,16 @@ public class Handler {
 
 	public void removeTile(Tile ti) {
 		tile.remove(ti);
+	}
+
+	public void createLevel() {
+
+		for (int i = 0; i < Main.WIDTH * Main.SCALE / 64 + 1; i++) {
+			addTile(new Wall(i * 64, Main.HEIGHT * Main.SCALE - 64 + 10, 64 + 2, 64, true, Id.Wall, this));
+
+			if (i != 0 && i != 1 && i != 8 && i != 9 && i != 15 && i != 16 && i != 17) {
+				addTile(new Wall(i * 64, 300, 64 + 2, 64, true, Id.Wall, this));
+			}
+		}
 	}
 }

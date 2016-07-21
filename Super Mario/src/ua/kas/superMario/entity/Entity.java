@@ -12,7 +12,11 @@ public abstract class Entity {
 	public int width, height;
 	public int velX, velY;
 
+	public double gravity = 0.0;
+
 	public boolean solid;
+	public boolean jumping = false;
+	public boolean falling = true;
 
 	public Id id;
 	public Handler handler;
@@ -73,18 +77,18 @@ public abstract class Entity {
 	}
 
 	public Rectangle getBoundsTop() {
-		return new Rectangle(getX() + 1, getY(), width - 2, 5);
+		return new Rectangle(getX() + 10, getY(), width - 20, 5);
 	}
 
 	public Rectangle getBoundsBottom() {
-		return new Rectangle(getX() + 1, getY() + height - 5, width - 2, 5);
+		return new Rectangle(getX() + 10, getY() + height - 5, width - 20, 5);
 	}
 
 	public Rectangle getBoundsLeft() {
-		return new Rectangle(getX(), getY() + 1, 5, height - 2);
+		return new Rectangle(getX(), getY() + 10, 5, height - 20);
 	}
 
 	public Rectangle getBoundsRight() {
-		return new Rectangle(getX() + width - 5, getY() + 1, 5, height - 2);
+		return new Rectangle(getX() + width - 5, getY() + 10, 5, height - 20);
 	}
 }
