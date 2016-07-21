@@ -1,6 +1,7 @@
 package ua.kas.superMario.tile;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import ua.kas.superMario.Handler;
 import ua.kas.superMario.Id;
@@ -11,10 +12,10 @@ public abstract class Tile {
 	public int width, height;
 	public int velX, velY;
 
-	private boolean solid;
+	public boolean solid;
 
-	private Id id;
-	private Handler handler;
+	public Id id;
+	public Handler handler;
 
 	public Tile(int x, int y, int width, int height, boolean solid, Id id, Handler handler) {
 		super();
@@ -68,4 +69,7 @@ public abstract class Tile {
 		return solid;
 	}
 
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
+	}
 }

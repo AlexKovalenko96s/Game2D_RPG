@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 import ua.kas.superMario.entity.Player;
 import ua.kas.superMario.input.KeyInput;
+import ua.kas.superMario.tile.Wall;
 
 public class Main extends Canvas implements Runnable {
 
@@ -42,6 +43,7 @@ public class Main extends Canvas implements Runnable {
 		addKeyListener(new KeyInput());
 
 		handler.addEntity(new Player(370, 506, 64, 64, true, Id.Player, handler));
+		handler.addTile(new Wall(200, 200, 64, 64, true, Id.Wall, handler));
 	}
 
 	private synchronized void start() {
@@ -133,6 +135,10 @@ public class Main extends Canvas implements Runnable {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.YELLOW);
 		g.fillRect(200, 200, getWidth() - 400, getHeight() - 400);
+		g.setColor(Color.GREEN);
+
+		g.fillRect(371, 506, 64 - 2, 5);// Collision Detection
+		g.fillRect(370, 507, 5, 64 - 2);// Collision Detection
 
 		handler.render(g);
 

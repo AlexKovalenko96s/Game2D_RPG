@@ -1,6 +1,7 @@
 package ua.kas.superMario.entity;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import ua.kas.superMario.Handler;
 import ua.kas.superMario.Id;
@@ -11,10 +12,10 @@ public abstract class Entity {
 	public int width, height;
 	public int velX, velY;
 
-	private boolean solid;
+	public boolean solid;
 
-	private Id id;
-	private Handler handler;
+	public Id id;
+	public Handler handler;
 
 	public Entity(int x, int y, int width, int height, boolean solid, Id id, Handler handler) {
 		super();
@@ -67,4 +68,23 @@ public abstract class Entity {
 		return solid;
 	}
 
+	public Rectangle getBounds() {
+		return new Rectangle(getX(), getY(), width, height);
+	}
+
+	public Rectangle getBoundsTop() {
+		return new Rectangle(getX() + 1, getY(), width - 2, 5);
+	}
+
+	public Rectangle getBoundsBottom() {
+		return new Rectangle(getX() + 1, getY() + height - 5, width - 2, 5);
+	}
+
+	public Rectangle getBoundsLeft() {
+		return new Rectangle(getX(), getY() + 1, 5, height - 2);
+	}
+
+	public Rectangle getBoundsRight() {
+		return new Rectangle(getX() + width - 5, getY() + 1, 5, height - 2);
+	}
 }

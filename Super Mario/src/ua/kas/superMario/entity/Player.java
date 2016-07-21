@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import ua.kas.superMario.Handler;
 import ua.kas.superMario.Id;
+import ua.kas.superMario.tile.Tile;
 
 public class Player extends Entity {
 
@@ -41,6 +42,34 @@ public class Player extends Entity {
 
 		if (y + height >= 771) {
 			y = 771 - height;
+		}
+
+		for (Tile t : handler.tile) {
+			if (!t.solid) {
+				break;
+			}
+
+			if (t.getId() == Id.Wall) {
+				if (getBoundsTop().intersects(t.getBounds())) {
+					setVelY(0);
+					y = t.getY() + t.height;
+				}
+
+				if (getBoundsBottom().intersects(t.getBounds())) {
+					setVelY(0);
+					y = t.getY() - t.height;
+				}
+
+				if (getBoundsLeft().intersects(t.getBounds())) {
+					setVelX(0);
+					x = t.getX() + t.width;
+				}
+
+				if (getBoundsRight().intersects(t.getBounds())) {
+					setVelX(0);
+					x = t.getX() - t.width;
+				}
+			}
 		}
 	}
 }
