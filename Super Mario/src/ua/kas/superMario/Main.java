@@ -31,7 +31,7 @@ public class Main extends Canvas implements Runnable {
 	public static SpriteSheet sheet;
 
 	public static Sprite grass;
-	public static Sprite player;
+	public static Sprite player[] = new Sprite[9];
 
 	public Main() {
 
@@ -49,7 +49,24 @@ public class Main extends Canvas implements Runnable {
 		addKeyListener(new KeyInput());
 
 		grass = new Sprite(sheet, 2, 1);
-		player = new Sprite(sheet, 1, 1);
+
+		int n = 0;
+
+		for (int k = 3; k <= 5; k++) {
+			for (int i = 1; i <= 4; i++) {
+
+				if (i == 2 && k == 3) {
+					player[n] = new Sprite(sheet, i, k);
+
+					n++;
+				}
+
+				else if (k != 3) {
+					player[n] = new Sprite(sheet, i, k);
+					n++;
+				}
+			}
+		}
 
 		handler.addEntity(new Player(370, 506, 64, 64, true, Id.Player, handler));
 

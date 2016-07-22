@@ -9,16 +9,29 @@ import ua.kas.superMario.tile.Tile;
 
 public class Player extends Entity {
 
+	private int frame = 1;
+	private int frameDelay = 0;
+
+	private boolean animate = false;
+
 	public Player(int x, int y, int width, int height, boolean solid, Id id, Handler handler) {
-
 		super(x, y, width, height, solid, id, handler);
-
 	}
 
 	@Override
 	public void render(Graphics g) {
 
-		g.drawImage(Main.player.getBufferedImage(), x, y, width, height, null);
+		if (facing == 1 && animate) {
+			g.drawImage(Main.player[frame + 4].getBufferedImage(), x, y, width, height, null);
+		}
+
+		if (facing == 0 && animate) {
+			g.drawImage(Main.player[frame].getBufferedImage(), x, y, width, height, null);
+		}
+
+		if (!animate) {
+			g.drawImage(Main.player[0].getBufferedImage(), x, y, width, height, null);
+		}
 
 		// g.setColor(Color.BLUE); simple rectangle
 		// g.fillRect(x, y, width, height);
@@ -44,6 +57,12 @@ public class Player extends Entity {
 
 		if (y + height >= 771) {
 			y = 771 - height;
+		}
+
+		if (velX != 0) {
+			animate = true;
+		} else {
+			animate = false;
 		}
 
 		for (Tile t : handler.tile) {
@@ -96,6 +115,19 @@ public class Player extends Entity {
 		if (falling) {
 			gravity += 0.1;
 			setVelY((int) gravity);
+		}
+
+		if (animate) {
+
+			frameDelay++;
+
+			if (frameDelay >= 10) {
+				frame++;
+				if (frame >= 5) {
+					frame = 1;
+				}
+				frameDelay = 0;
+			}
 		}
 	}
 }
