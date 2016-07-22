@@ -1,10 +1,10 @@
 package ua.kas.superMario.tile;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import ua.kas.superMario.Handler;
 import ua.kas.superMario.Id;
+import ua.kas.superMario.Main;
 
 public class Wall extends Tile {
 
@@ -16,8 +16,10 @@ public class Wall extends Tile {
 	@Override
 	public void render(Graphics g) {
 
-		g.setColor(Color.RED);
-		g.fillRect(x, y, width, height);
+		g.drawImage(Main.grass.getBufferedImage(), x, y, width, height, null);
+
+		// g.setColor(Color.RED); simple rectangle
+		// g.fillRect(x, y, width, height);
 	}
 
 	@Override

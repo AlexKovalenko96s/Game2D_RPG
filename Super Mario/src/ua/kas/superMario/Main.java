@@ -9,6 +9,8 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import ua.kas.superMario.entity.Player;
+import ua.kas.superMario.gfx.Sprite;
+import ua.kas.superMario.gfx.SpriteSheet;
 import ua.kas.superMario.input.KeyInput;
 
 public class Main extends Canvas implements Runnable {
@@ -26,6 +28,10 @@ public class Main extends Canvas implements Runnable {
 	private Thread thread;
 
 	public static Handler handler;
+	public static SpriteSheet sheet;
+
+	public static Sprite grass;
+	public static Sprite player;
 
 	public Main() {
 
@@ -38,10 +44,15 @@ public class Main extends Canvas implements Runnable {
 	private void init() {
 
 		handler = new Handler();
+		sheet = new SpriteSheet("/spritesheet.png");
 
 		addKeyListener(new KeyInput());
 
+		grass = new Sprite(sheet, 2, 1);
+		player = new Sprite(sheet, 1, 1);
+
 		handler.addEntity(new Player(370, 506, 64, 64, true, Id.Player, handler));
+
 		// handler.addTile(new Wall(200, 200, 64, 64, true, Id.Wall, handler));
 	}
 

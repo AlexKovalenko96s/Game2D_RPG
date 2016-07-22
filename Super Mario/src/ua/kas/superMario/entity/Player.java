@@ -1,10 +1,10 @@
 package ua.kas.superMario.entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import ua.kas.superMario.Handler;
 import ua.kas.superMario.Id;
+import ua.kas.superMario.Main;
 import ua.kas.superMario.tile.Tile;
 
 public class Player extends Entity {
@@ -18,8 +18,10 @@ public class Player extends Entity {
 	@Override
 	public void render(Graphics g) {
 
-		g.setColor(Color.BLUE);
-		g.fillRect(x, y, width, height);
+		g.drawImage(Main.player.getBufferedImage(), x, y, width, height, null);
+
+		// g.setColor(Color.BLUE); simple rectangle
+		// g.fillRect(x, y, width, height);
 	}
 
 	@Override
