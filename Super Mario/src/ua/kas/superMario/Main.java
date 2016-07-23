@@ -5,11 +5,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import ua.kas.superMario.entity.Entity;
-import ua.kas.superMario.entity.Player;
 import ua.kas.superMario.gfx.Sprite;
 import ua.kas.superMario.gfx.SpriteSheet;
 import ua.kas.superMario.input.KeyInput;
@@ -34,6 +36,8 @@ public class Main extends Canvas implements Runnable {
 
 	public static Sprite grass;
 	public static Sprite player[] = new Sprite[8];
+
+	private BufferedImage image;
 
 	public Main() {
 
@@ -64,8 +68,16 @@ public class Main extends Canvas implements Runnable {
 			}
 		}
 
-		handler.addEntity(new Player(370, 506, 64, 64, true, Id.Player, handler));
+		try {
+			image = ImageIO.read(getClass().getResource("/level.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
+		handler.createLevel(image);
+
+		// handler.addEntity(new Player(370, 506, 64, 64, true, Id.Player,
+		// handler));
 		// handler.addTile(new Wall(200, 200, 64, 64, true, Id.Wall, handler));
 	}
 

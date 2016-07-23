@@ -55,13 +55,13 @@ public class Player extends Entity {
 		// y = 0;
 		// }
 
-		if (x + width >= 1090) {
-			x = 1090 - width;
-		}
-
-		if (y + height >= 771) {
-			y = 771 - height;
-		}
+		// if (x + width >= 1090) {
+		// x = 1090 - width;
+		// }
+		//
+		// if (y + height >= 771) {
+		// y = 771 - height;
+		// }
 
 		if (velX != 0) {
 			animate = true;
