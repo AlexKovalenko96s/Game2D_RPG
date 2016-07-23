@@ -9,7 +9,7 @@ import ua.kas.superMario.tile.Tile;
 
 public class Player extends Entity {
 
-	private int frame = 1;
+	private int frame = 0;
 	private int frameDelay = 0;
 
 	private boolean animate = false;
@@ -21,16 +21,20 @@ public class Player extends Entity {
 	@Override
 	public void render(Graphics g) {
 
-		if (facing == 1 && animate) {
+		if (facing == 0 && animate) {
 			g.drawImage(Main.player[frame + 4].getBufferedImage(), x, y, width, height, null);
 		}
 
-		if (facing == 0 && animate) {
+		if (facing == 1 && animate) {
 			g.drawImage(Main.player[frame].getBufferedImage(), x, y, width, height, null);
 		}
 
-		if (!animate) {
+		else if (facing == 1 && !animate) {
 			g.drawImage(Main.player[0].getBufferedImage(), x, y, width, height, null);
+		}
+
+		else if (facing == 0 && !animate) {
+			g.drawImage(Main.player[4].getBufferedImage(), x, y, width, height, null);
 		}
 
 		// g.setColor(Color.BLUE); simple rectangle
@@ -123,8 +127,8 @@ public class Player extends Entity {
 
 			if (frameDelay >= 10) {
 				frame++;
-				if (frame >= 5) {
-					frame = 1;
+				if (frame >= 4) {
+					frame = 0;
 				}
 				frameDelay = 0;
 			}

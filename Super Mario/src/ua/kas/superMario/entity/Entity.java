@@ -11,7 +11,7 @@ public abstract class Entity {
 	public int x, y;
 	public int width, height;
 	public int velX, velY;
-	public int facing = 0; // 0 - left, 1 - right
+	public int facing = 1; // 0 - left, 1 - right
 
 	public double gravity = 0.0;
 

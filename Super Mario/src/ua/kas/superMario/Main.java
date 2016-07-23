@@ -8,6 +8,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import ua.kas.superMario.entity.Entity;
 import ua.kas.superMario.entity.Player;
 import ua.kas.superMario.gfx.Sprite;
 import ua.kas.superMario.gfx.SpriteSheet;
@@ -29,9 +30,10 @@ public class Main extends Canvas implements Runnable {
 
 	public static Handler handler;
 	public static SpriteSheet sheet;
+	public static Camera cam;
 
 	public static Sprite grass;
-	public static Sprite player[] = new Sprite[9];
+	public static Sprite player[] = new Sprite[8];
 
 	public Main() {
 
@@ -43,6 +45,7 @@ public class Main extends Canvas implements Runnable {
 
 	private void init() {
 
+		cam = new Camera();
 		handler = new Handler();
 		sheet = new SpriteSheet("/spritesheet.png");
 
@@ -52,19 +55,12 @@ public class Main extends Canvas implements Runnable {
 
 		int n = 0;
 
-		for (int k = 3; k <= 5; k++) {
-			for (int i = 1; i <= 4; i++) {
+		for (int k = 1; k <= 2; k++) {
+			for (int i = 6; i <= 9; i++) {
 
-				if (i == 2 && k == 3) {
-					player[n] = new Sprite(sheet, i, k);
+				player[n] = new Sprite(sheet, i, k);
+				n++;
 
-					n++;
-				}
-
-				else if (k != 3) {
-					player[n] = new Sprite(sheet, i, k);
-					n++;
-				}
 			}
 		}
 
@@ -159,8 +155,9 @@ public class Main extends Canvas implements Runnable {
 
 		Graphics g = bs.getDrawGraphics();
 
-		g.setColor(Color.MAGENTA);
+		g.setColor(new Color(140, 190, 255));
 		g.fillRect(0, 0, getWidth(), getHeight());
+		g.translate(cam.getX(), cam.getY());
 
 		// g.setColor(Color.YELLOW);
 		// g.fillRect(200, 200, getWidth() - 400, getHeight() - 400);
@@ -176,8 +173,21 @@ public class Main extends Canvas implements Runnable {
 	}
 
 	public void tick() {
-
 		handler.tick();
+
+		for (Entity e : handler.entity) {
+			if (e.getId() == Id.Player) {
+				cam.tick(e);
+			}
+		}
+	}
+
+	public int getFrameWidth() {
+		return WIDTH * SCALE;
+	}
+
+	public int getFrameHeight() {
+		return HEIGHT * SCALE;
 	}
 
 	public static void main(String[] args) {
