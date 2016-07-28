@@ -5,13 +5,15 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class Main implements ActionListener {
+public class Main implements ActionListener, KeyListener {
 
 	public ArrayList<Point> snakeParts = new ArrayList<Point>();
 
@@ -21,7 +23,7 @@ public class Main implements ActionListener {
 	public int ticks = 0;
 	public int direction = DOWN;
 	public int score = 0;
-	public int tailLength = 0;
+	public int tailLength = 10;
 
 	public boolean over = false;
 
@@ -49,10 +51,15 @@ public class Main implements ActionListener {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.add(renderPanel = new RenderPanel());
+		frame.addKeyListener(this);
 		head = new Point(0, 0);
 		random = new Random();
 		apple = new Point(dim.width / SCALE, dim.height / SCALE);
 		frame.setVisible(true);
+
+		for (int i = 0; i < tailLength; i++) {
+			snakeParts.add(new Point(head.x, head.y));
+		}
 
 		timer.start();
 	}
@@ -96,7 +103,9 @@ public class Main implements ActionListener {
 				}
 			}
 
-			snakeParts.remove(0);
+			// for (int i = 0; i < tailLength; i++) {
+			// snakeParts.remove(i);
+			// }
 
 			if (apple != null) {
 				if (head.equals(apple)) {
@@ -111,5 +120,34 @@ public class Main implements ActionListener {
 	public static void main(String[] args) {
 
 		main = new Main();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+		int i = e.getKeyCode();
+
+		if (i == KeyEvent.VK_W && direction != DOWN) {
+			direction = UP;
+		}
+		if (i == KeyEvent.VK_S && direction != UP) {
+			direction = DOWN;
+		}
+		if (i == KeyEvent.VK_A && direction != RIGHT) {
+			direction = LEFT;
+		}
+		if (i == KeyEvent.VK_D && direction != LEFT) {
+			direction = RIGHT;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// not used
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// not used
 	}
 }
