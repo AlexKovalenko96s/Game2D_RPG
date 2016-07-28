@@ -23,9 +23,10 @@ public class Main implements ActionListener, KeyListener {
 	public int ticks = 0;
 	public int direction = DOWN;
 	public int score = 0;
-	public int tailLength = 10;
+	public int tailLength = 2;
 
 	public boolean over = false;
+	public boolean paused = false;
 
 	public Dimension dim;
 
@@ -47,19 +48,35 @@ public class Main implements ActionListener, KeyListener {
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame = new JFrame("Snake");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 700);
+		frame.setSize(805, 700);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.add(renderPanel = new RenderPanel());
 		frame.addKeyListener(this);
-		head = new Point(0, 0);
-		random = new Random();
-		apple = new Point(dim.width / SCALE, dim.height / SCALE);
+
 		frame.setVisible(true);
 
-		for (int i = 0; i < tailLength; i++) {
-			snakeParts.add(new Point(head.x, head.y));
-		}
+		startGame();
+	}
+
+	public void startGame() {
+
+		over = false;
+		paused = false;
+
+		tailLength = 2;
+		score = 0;
+		direction = DOWN;
+
+		head = new Point(0, 0);
+		random = new Random();
+		apple = new Point(random.nextInt(79), random.nextInt(66));
+
+		snakeParts.clear();
+
+		// for (int i = 0; i < tailLength; i++) {
+		// snakeParts.add(new Point(head.x, head.y));
+		// }
 
 		timer.start();
 	}
@@ -68,53 +85,65 @@ public class Main implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent arg0) {
 
 		renderPanel.repaint();
-		ticks++;
 
-		if (ticks % 10 == 0 && head != null && over != true) {
+		if (!over) {
+			ticks++;
+		}
+
+		if (ticks % 2 == 0 && head != null && over != true && paused != true) {
 
 			snakeParts.add(new Point(head.x, head.y));
 
+			if (snakeParts.size() > tailLength) {
+				snakeParts.remove(0);
+			}
+
 			if (direction == UP) {
-				if (head.y - 1 > 0) {
+				if (head.y - 1 >= 0 && noTailAt(head.x, head.y - 1)) {
 					head = new Point(head.x, head.y - 1);
 				} else {
 					over = true;
 				}
 			}
 			if (direction == DOWN) {
-				if (head.y + 1 < dim.height / SCALE) {
+				if (head.y + 1 <= 66 && noTailAt(head.x, head.y + 1)) {
 					head = new Point(head.x, head.y + 1);
 				} else {
 					over = true;
 				}
 			}
 			if (direction == LEFT) {
-				if (head.x - 1 > 0) {
+				if (head.x - 1 >= 0 && noTailAt(head.x - 1, head.y)) {
 					head = new Point(head.x - 1, head.y);
 				} else {
 					over = true;
 				}
 			}
 			if (direction == RIGHT) {
-				if (head.x + 1 < dim.width / SCALE) {
+				if (head.x + 1 <= 79 && noTailAt(head.x + 1, head.y)) {
 					head = new Point(head.x + 1, head.y);
 				} else {
 					over = true;
 				}
 			}
 
-			// for (int i = 0; i < tailLength; i++) {
-			// snakeParts.remove(i);
-			// }
-
 			if (apple != null) {
 				if (head.equals(apple)) {
 					score += 10;
 					tailLength++;
-					apple.setLocation(dim.width / SCALE, dim.height / SCALE);
+					apple.setLocation(random.nextInt(79), random.nextInt(66));
 				}
 			}
 		}
+	}
+
+	private boolean noTailAt(int x, int y) {
+		for (Point point : snakeParts) {
+			if (point.equals(new Point(x, y))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static void main(String[] args) {
@@ -138,6 +167,14 @@ public class Main implements ActionListener, KeyListener {
 		}
 		if (i == KeyEvent.VK_D && direction != LEFT) {
 			direction = RIGHT;
+		}
+		if (i == KeyEvent.VK_SPACE) {
+			if (over) {
+				startGame();
+			} else {
+				paused = !paused;
+
+			}
 		}
 	}
 
