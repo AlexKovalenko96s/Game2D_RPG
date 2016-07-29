@@ -15,11 +15,11 @@ public class Map {
 
 	private BufferedImage sheet;
 	private Image img_grass, img_wall;
+	private Image headUP, headDOWN, headLEFT, headRIGHT, tail, apple;
 
 	private String Map[] = new String[25];
 
 	public Map() {
-
 		try {
 			sheet = ImageIO.read(new File("res/snake.png"));
 		} catch (IOException e) {
@@ -32,9 +32,51 @@ public class Map {
 		img = new ImageIcon(sheet.getSubimage(3 * 32 - 32, 1 * 32 - 32, 32, 32));
 		img_wall = img.getImage();
 
+		img = new ImageIcon(sheet.getSubimage(4 * 32 - 32, 1 * 32 - 32, 32, 32));
+		apple = img.getImage();
+
+		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 4 * 32 - 32, 32, 32));
+		tail = img.getImage();
+
+		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 3 * 32 - 32, 32, 32));
+		headUP = img.getImage();
+
+		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 5 * 32 - 32, 32, 32));
+		headDOWN = img.getImage();
+
+		img = new ImageIcon(sheet.getSubimage(1 * 32 - 32, 4 * 32 - 32, 32, 32));
+		headLEFT = img.getImage();
+
+		img = new ImageIcon(sheet.getSubimage(3 * 32 - 32, 4 * 32 - 32, 32, 32));
+		headRIGHT = img.getImage();
+
 		openFile();
 		readFile();
 		closeFile();
+	}
+
+	public Image getHeadUP() {
+		return headUP;
+	}
+
+	public Image getHeadDOWN() {
+		return headDOWN;
+	}
+
+	public Image getHeadLEFT() {
+		return headLEFT;
+	}
+
+	public Image getHeadRIGHT() {
+		return headRIGHT;
+	}
+
+	public Image getTail() {
+		return tail;
+	}
+
+	public Image getApple() {
+		return apple;
 	}
 
 	public Image getGrass() {
@@ -53,7 +95,7 @@ public class Map {
 	private void openFile() {
 
 		try {
-			scn = new Scanner(new File("res/level1.txt"));
+			scn = new Scanner(new File("res/level" + Main.level + ".txt"));
 		} catch (Exception e) {
 			System.err.println("Error Loading Map!");
 		}
