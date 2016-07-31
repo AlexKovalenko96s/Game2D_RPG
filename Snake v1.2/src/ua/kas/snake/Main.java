@@ -145,20 +145,6 @@ public class Main implements ActionListener, KeyListener {
 		fail = false;
 		pause = true;
 
-		if (level == 1 && tail == 12) {
-
-			try {
-				renderPanel.createLevel(ImageIO.read(new File("res/level2.png")));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			tail = 2;
-			level = 2;
-			direction = DOWN;
-			head = new Point(1, 1);
-		}
-
 		if (secret.equals("148")) {
 
 			secret = "";
@@ -175,13 +161,27 @@ public class Main implements ActionListener, KeyListener {
 			head = new Point(1, 1);
 		}
 
-		else {
+		if (level == 1 && tail == 12) {
+
+			try {
+				renderPanel.createLevel(ImageIO.read(new File("res/level2.png")));
+				System.out.println(wallPoints);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			tail = 2;
+			level = 2;
+			direction = DOWN;
+			head = new Point(1, 1);
+		} else {
 			try {
 				renderPanel.createLevel(ImageIO.read(new File("res/level1.png")));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
+			System.out.println(wallPoints);
 			tail = 2;
 			level = 1;
 			direction = DOWN;
