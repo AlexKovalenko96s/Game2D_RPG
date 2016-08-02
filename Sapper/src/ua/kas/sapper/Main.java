@@ -106,7 +106,7 @@ public class Main implements ActionListener {
 
 		// reset counts, pick out 30 mines
 		counts = new int[20][20];
-		for (int a = 0; a < 30; a++) {
+		for (int a = 0; a < 1; a++) {
 			int choice = (int) (Math.random() * list.size());
 			counts[list.get(choice) / 100][list.get(choice) % 100] = MINE;
 			list.remove(choice);
