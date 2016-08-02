@@ -26,7 +26,7 @@ public class Main implements ActionListener {
 
 	public static Container grid = new Container();
 
-	public static Tile tile;
+	public static Tile tile = new Tile();
 
 	public Main() {
 		frame = new JFrame("Sapper");
@@ -58,7 +58,6 @@ public class Main implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		tile = new Tile();
 		if (e.getSource().equals(reset)) {
 			for (int x = 0; x < buttons.length; x++) {
 				for (int y = 0; y < buttons[0].length; y++) {
@@ -70,7 +69,21 @@ public class Main implements ActionListener {
 			for (int x = 0; x < buttons.length; x++) {
 				for (int y = 0; y < buttons[0].length; y++) {
 					if (e.getSource().equals(buttons[x][y])) {
-						number(x, y);
+						if (counts[x][y] == 0) {
+							buttons[x][y].setIcon(tile.getZero());
+							ArrayList<Integer> toClear = new ArrayList<Integer>();
+							toClear.add(x * 100 + y);
+							clearZeros(toClear);
+						}
+						if (counts[x][y] == 1) {
+							buttons[x][y].setIcon(tile.getOne());
+						}
+						if (counts[x][y] == 2) {
+							buttons[x][y].setIcon(tile.getTwo());
+						}
+						if (counts[x][y] == 3) {
+							buttons[x][y].setIcon(tile.getThree());
+						}
 						if (counts[x][y] == MINE) {
 							buttons[x][y].setIcon(tile.getMine());
 							lostGame();
@@ -119,13 +132,13 @@ public class Main implements ActionListener {
 					if (x > 0 && y > 0 && counts[x - 1][y - 1] == MINE) {// up/left
 						neighborcount++;
 					}
-					if (x < counts.length - 1 && y > 0 && counts[x + 1][y - 1] == MINE) {// down/left
+					if (x < counts.length - 1 && y > 0 && counts[x + 1][y - 1] == MINE) {// up/right
 						neighborcount++;
 					}
 					if (x < counts.length - 1 && y < counts[0].length - 1 && counts[x + 1][y + 1] == MINE) {// down/right
 						neighborcount++;
 					}
-					if (x > 0 && y < counts[0].length - 1 && counts[x - 1][y + 1] == MINE) {// up/right
+					if (x > 0 && y < counts[0].length - 1 && counts[x - 1][y + 1] == MINE) {// down/left
 						neighborcount++;
 					}
 					counts[x][y] = neighborcount;
@@ -137,9 +150,6 @@ public class Main implements ActionListener {
 	public void number(int x, int y) {
 		if (counts[x][y] == 0) {
 			buttons[x][y].setIcon(tile.getZero());
-			ArrayList<Integer> toClear = new ArrayList<Integer>();
-			toClear.add(x * 100 + y);
-			clearZeros(toClear);
 		}
 		if (counts[x][y] == 1) {
 			buttons[x][y].setIcon(tile.getOne());
@@ -153,7 +163,6 @@ public class Main implements ActionListener {
 	}
 
 	public void clearZeros(ArrayList<Integer> toClear) {
-		System.out.println("ddd");
 		if (toClear.size() == 0) {
 			return;
 		} else {
@@ -164,6 +173,48 @@ public class Main implements ActionListener {
 				number(x - 1, y - 1);
 				if (counts[x - 1][y - 1] == 0) {
 					toClear.add((x - 1) * 100 + (y - 1));
+				}
+			}
+			if (y > 0 && buttons[x][y - 1].isEnabled()) { // up
+				number(x, y - 1);
+				if (counts[x][y - 1] == 0) {
+					toClear.add(x * 100 + y - 1);
+				}
+			}
+			if (x < counts.length - 1 && y > 0 && buttons[x + 1][y - 1].isEnabled()) {// up/right
+				number(x + 1, y - 1);
+				if (counts[x + 1][y - 1] == 0) {
+					toClear.add((x + 1) * 100 + (y - 1));
+				}
+			}
+			if (x > 0 && y < counts[0].length - 1 && buttons[x - 1][y + 1].isEnabled()) {// down/left
+				number(x - 1, y + 1);
+				if (counts[x - 1][y + 1] == 0) {
+					toClear.add((x - 1) * 100 + (y + 1));
+				}
+			}
+			if (y < counts[0].length - 1 && buttons[x][y + 1].isEnabled()) { // down
+				number(x, y + 1);
+				if (counts[x][y + 1] == 0) {
+					toClear.add(x * 100 + y + 1);
+				}
+			}
+			if (x < counts.length - 1 && y < counts[0].length - 1 && buttons[x + 1][y + 1].isEnabled()) {// down/right
+				number(x + 1, y + 1);
+				if (counts[x + 1][y + 1] == 0) {
+					toClear.add((x + 1) * 100 + (y + 1));
+				}
+			}
+			if (x > 0 && buttons[x - 1][y].isEnabled()) { // left
+				number(x - 1, y);
+				if (counts[x - 1][y] == 0) {
+					toClear.add((x - 1) * 100 + y);
+				}
+			}
+			if (x < counts.length - 1 && buttons[x + 1][y].isEnabled()) { // right
+				number(x + 1, y);
+				if (counts[x + 1][y] == 0) {
+					toClear.add((x + 1) * 100 + y);
 				}
 			}
 			clearZeros(toClear);
