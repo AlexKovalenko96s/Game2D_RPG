@@ -12,8 +12,8 @@ import javax.swing.JFrame;
 
 public class Main implements ActionListener {
 
-	public static final int HEIGHT = 400;
-	public static final int WIDTH = 400;
+	public static final int HEIGHT = 800;
+	public static final int WIDTH = 800;
 	public static final int MINE = 10;
 
 	public static JButton reset = new JButton("Reset");
@@ -25,6 +25,8 @@ public class Main implements ActionListener {
 	public static JFrame frame;
 
 	public static Container grid = new Container();
+
+	public static Tile tile;
 
 	public Main() {
 		frame = new JFrame("Sapper");
@@ -55,8 +57,28 @@ public class Main implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-
+	public void actionPerformed(ActionEvent e) {
+		tile = new Tile();
+		if (e.getSource().equals(reset)) {
+			for (int x = 0; x < buttons.length; x++) {
+				for (int y = 0; y < buttons[0].length; y++) {
+					buttons[x][y].setIcon(null);
+				}
+			}
+			createRandomMines();
+		} else {
+			for (int x = 0; x < buttons.length; x++) {
+				for (int y = 0; y < buttons[0].length; y++) {
+					if (e.getSource().equals(buttons[x][y])) {
+						number(x, y);
+						if (counts[x][y] == MINE) {
+							buttons[x][y].setIcon(tile.getMine());
+							lostGame();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void createRandomMines() {
@@ -75,6 +97,92 @@ public class Main implements ActionListener {
 			int choice = (int) (Math.random() * list.size());
 			counts[list.get(choice) / 100][list.get(choice) % 100] = MINE;
 			list.remove(choice);
+		}
+
+		// initialize neighbor counts
+		for (int x = 0; x < counts.length; x++) {
+			for (int y = 0; y < counts[0].length; y++) {
+				if (counts[x][y] != MINE) {
+					int neighborcount = 0;
+					if (y > 0 && counts[x][y - 1] == MINE) {// up
+						neighborcount++;
+					}
+					if (x > 0 && counts[x - 1][y] == MINE) {// left
+						neighborcount++;
+					}
+					if (x < counts.length - 1 && counts[x + 1][y] == MINE) {// right
+						neighborcount++;
+					}
+					if (y < counts[0].length - 1 && counts[x][y + 1] == MINE) {// down
+						neighborcount++;
+					}
+					if (x > 0 && y > 0 && counts[x - 1][y - 1] == MINE) {// up/left
+						neighborcount++;
+					}
+					if (x < counts.length - 1 && y > 0 && counts[x + 1][y - 1] == MINE) {// down/left
+						neighborcount++;
+					}
+					if (x < counts.length - 1 && y < counts[0].length - 1 && counts[x + 1][y + 1] == MINE) {// down/right
+						neighborcount++;
+					}
+					if (x > 0 && y < counts[0].length - 1 && counts[x - 1][y + 1] == MINE) {// up/right
+						neighborcount++;
+					}
+					counts[x][y] = neighborcount;
+				}
+			}
+		}
+	}
+
+	public void number(int x, int y) {
+		if (counts[x][y] == 0) {
+			buttons[x][y].setIcon(tile.getZero());
+			ArrayList<Integer> toClear = new ArrayList<Integer>();
+			toClear.add(x * 100 + y);
+			clearZeros(toClear);
+		}
+		if (counts[x][y] == 1) {
+			buttons[x][y].setIcon(tile.getOne());
+		}
+		if (counts[x][y] == 2) {
+			buttons[x][y].setIcon(tile.getTwo());
+		}
+		if (counts[x][y] == 3) {
+			buttons[x][y].setIcon(tile.getThree());
+		}
+	}
+
+	public void clearZeros(ArrayList<Integer> toClear) {
+		System.out.println("ddd");
+		if (toClear.size() == 0) {
+			return;
+		} else {
+			int x = toClear.get(0) / 100;
+			int y = toClear.get(0) % 100;
+			toClear.remove(0);
+			if (x > 0 && y > 0 && buttons[x - 1][y - 1].isEnabled()) {// up/left
+				number(x - 1, y - 1);
+				if (counts[x - 1][y - 1] == 0) {
+					toClear.add((x - 1) * 100 + (y - 1));
+				}
+			}
+			clearZeros(toClear);
+		}
+	}
+
+	public void lostGame() {
+		for (int x = 0; x < buttons.length; x++) {
+			for (int y = 0; y < buttons[0].length; y++) {
+				if (buttons[x][y].isEnabled()) {
+					// number(x, y);
+					if (counts[x][y] == MINE) {
+						buttons[x][y].setIcon(tile.getMine());
+					} else {
+						// buttons[x][y].setEnabled(false);
+					}
+
+				}
+			}
 		}
 	}
 
