@@ -3,6 +3,7 @@ package ua.kas.main;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -23,15 +24,20 @@ public class Game extends Canvas implements Runnable {
 	private boolean running = false;
 
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private BufferedImage player;
+	private BufferedImage player_img = null;
 
 	private Thread thread;
 
 	public SpriteSheet spriteSheet;
+	public Player player;
 
 	public void init() {
 		spriteSheet = new SpriteSheet(spriteSheetPath);
-		player = (BufferedImage) spriteSheet.getShip();
+		player_img = (BufferedImage) spriteSheet.getShip();
+
+		addKeyListener(new KeyInput(this));
+
+		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, this);
 	}
 
 	private synchronized void start() {
@@ -62,6 +68,7 @@ public class Game extends Canvas implements Runnable {
 	@Override
 	public void run() {
 		init();
+		requestFocus();
 		long lastTime = System.nanoTime();
 		final double amountOfTicks = 60.0;
 		double ns = 1000000000 / amountOfTicks;
@@ -107,9 +114,43 @@ public class Game extends Canvas implements Runnable {
 
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-		g.drawImage(player, 100, 100, this);
+		player.render(g);
 		g.dispose();
 		bs.show();
+	}
+
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+
+		if (key == KeyEvent.VK_W) {
+			player.setY(player.getY() - 5);
+		}
+		if (key == KeyEvent.VK_S) {
+			player.setY(player.getY() + 5);
+		}
+		if (key == KeyEvent.VK_A) {
+			player.setX(player.getX() - 5);
+		}
+		if (key == KeyEvent.VK_D) {
+			player.setX(player.getX() + 5);
+		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
+
+		// if (key == KeyEvent.VK_W) {
+		// player.setY(0);
+		// }
+		// if (key == KeyEvent.VK_S) {
+		// player.setY(0);
+		// }
+		// if (key == KeyEvent.VK_A) {
+		// player.setX(0);
+		// }
+		// if (key == KeyEvent.VK_D) {
+		// player.setX(0);
+		// }
 	}
 
 	public static void main(String[] args) {
@@ -128,5 +169,9 @@ public class Game extends Canvas implements Runnable {
 		frame.setVisible(true);
 
 		game.start();
+	}
+
+	public BufferedImage getPlayer_img() {
+		return player_img;
 	}
 }
