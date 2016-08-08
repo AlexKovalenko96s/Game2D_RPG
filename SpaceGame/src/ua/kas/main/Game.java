@@ -102,7 +102,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-
+		player.tick();
 	}
 
 	private void render() {
@@ -123,34 +123,34 @@ public class Game extends Canvas implements Runnable {
 		int key = e.getKeyCode();
 
 		if (key == KeyEvent.VK_W) {
-			player.setY(player.getY() - 5);
+			player.setVelY(-5);
 		}
 		if (key == KeyEvent.VK_S) {
-			player.setY(player.getY() + 5);
+			player.setVelY(+5);
 		}
 		if (key == KeyEvent.VK_A) {
-			player.setX(player.getX() - 5);
+			player.setVelX(-5);
 		}
 		if (key == KeyEvent.VK_D) {
-			player.setX(player.getX() + 5);
+			player.setVelX(+5);
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		// if (key == KeyEvent.VK_W) {
-		// player.setY(0);
-		// }
-		// if (key == KeyEvent.VK_S) {
-		// player.setY(0);
-		// }
-		// if (key == KeyEvent.VK_A) {
-		// player.setX(0);
-		// }
-		// if (key == KeyEvent.VK_D) {
-		// player.setX(0);
-		// }
+		if (key == KeyEvent.VK_W) {
+			player.setVelY(0);
+		}
+		if (key == KeyEvent.VK_S) {
+			player.setVelY(0);
+		}
+		if (key == KeyEvent.VK_A) {
+			player.setVelX(0);
+		}
+		if (key == KeyEvent.VK_D) {
+			player.setVelX(0);
+		}
 	}
 
 	public static void main(String[] args) {
