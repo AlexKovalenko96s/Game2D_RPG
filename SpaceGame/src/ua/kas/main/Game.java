@@ -12,6 +12,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import ua.kas.main.object.Bullet;
+import ua.kas.main.object.Player;
+
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,8 +32,6 @@ public class Game extends Canvas implements Runnable {
 	private boolean shooting = false;
 
 	private BufferedImage background_img = null;
-	private BufferedImage player_img = null;
-	private BufferedImage bullet_img = null;
 
 	private Thread thread;
 
@@ -41,8 +42,6 @@ public class Game extends Canvas implements Runnable {
 	public void init() {
 		spriteSheet = new SpriteSheet(spriteSheetPath);
 
-		player_img = (BufferedImage) spriteSheet.getShip();
-		bullet_img = (BufferedImage) spriteSheet.getBullet();
 		try {
 			background_img = ImageIO.read(new File(backgroundPath));
 		} catch (IOException e) {
@@ -51,8 +50,8 @@ public class Game extends Canvas implements Runnable {
 
 		addKeyListener(new KeyInput(this));
 
-		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, this);
-		controller = new Controller(this);
+		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet);
+		controller = new Controller(this, spriteSheet);
 	}
 
 	private synchronized void start() {
@@ -153,7 +152,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		if (key == KeyEvent.VK_SPACE && !shooting) {
 			shooting = true;
-			controller.addBullet(new Bullet(player.getX(), player.getY() - 32, this));
+			controller.addBullet(new Bullet(player.getX(), player.getY() - 32, spriteSheet));
 		}
 	}
 
@@ -195,11 +194,11 @@ public class Game extends Canvas implements Runnable {
 		game.start();
 	}
 
-	public BufferedImage getPlayer_img() {
-		return player_img;
-	}
-
-	public BufferedImage getBullet_img() {
-		return bullet_img;
-	}
+	// public BufferedImage getPlayer_img() {
+	// return player_img;
+	// }
+	//
+	// public BufferedImage getBullet_img() {
+	// return bullet_img;
+	// }
 }

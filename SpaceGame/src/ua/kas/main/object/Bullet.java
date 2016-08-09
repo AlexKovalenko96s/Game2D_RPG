@@ -1,19 +1,20 @@
-package ua.kas.main;
+package ua.kas.main.object;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+
+import ua.kas.main.SpriteSheet;
 
 public class Bullet {
 
 	private double x;
 	private double y;
 
-	public BufferedImage bullet;
+	private SpriteSheet spriteSheet;
 
-	public Bullet(double x, double y, Game game) {
+	public Bullet(double x, double y, SpriteSheet spriteSheet) {
 		this.x = x;
 		this.y = y;
-		bullet = game.getBullet_img();
+		this.spriteSheet = spriteSheet;
 	}
 
 	public void tick() {
@@ -21,7 +22,7 @@ public class Bullet {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(bullet, (int) x, (int) y, null);
+		g.drawImage(spriteSheet.getBullet(), (int) x, (int) y, null);
 	}
 
 	public double getX() {
