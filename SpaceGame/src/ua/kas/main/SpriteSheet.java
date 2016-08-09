@@ -12,7 +12,7 @@ public class SpriteSheet {
 
 	private BufferedImage sheet;
 
-	private Image ship;
+	private Image ship, bullet;
 
 	private ImageIcon img;
 
@@ -25,9 +25,15 @@ public class SpriteSheet {
 
 		img = new ImageIcon(sheet.getSubimage(1 * 32 - 32, 1 * 32 - 32, 32, 32));
 		ship = img.getImage();
+		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 1 * 32 - 32, 32, 32));
+		bullet = img.getImage();
 	}
 
 	public Image getShip() {
 		return ship;
+	}
+
+	public Image getBullet() {
+		return bullet;
 	}
 }

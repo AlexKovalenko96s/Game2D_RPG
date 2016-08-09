@@ -6,7 +6,10 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable {
@@ -20,24 +23,36 @@ public class Game extends Canvas implements Runnable {
 	public static final String TITLE = "2D SpaceGame";
 
 	private String spriteSheetPath = "res/spaceGame.png";
+	private String backgroundPath = "res/bg_simple.png";
 
 	private boolean running = false;
+	private boolean shooting = false;
 
-	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private BufferedImage background_img = null;
 	private BufferedImage player_img = null;
+	private BufferedImage bullet_img = null;
 
 	private Thread thread;
 
 	public SpriteSheet spriteSheet;
 	public Player player;
+	public Controller controller;
 
 	public void init() {
 		spriteSheet = new SpriteSheet(spriteSheetPath);
+
 		player_img = (BufferedImage) spriteSheet.getShip();
+		bullet_img = (BufferedImage) spriteSheet.getBullet();
+		try {
+			background_img = ImageIO.read(new File(backgroundPath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		addKeyListener(new KeyInput(this));
 
 		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, this);
+		controller = new Controller(this);
 	}
 
 	private synchronized void start() {
@@ -103,6 +118,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		player.tick();
+		controller.tick();
 	}
 
 	private void render() {
@@ -113,8 +129,9 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		Graphics g = bs.getDrawGraphics();
-		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		g.drawImage(background_img, 0, 0, null);
 		player.render(g);
+		controller.render(g);
 		g.dispose();
 		bs.show();
 	}
@@ -134,6 +151,10 @@ public class Game extends Canvas implements Runnable {
 		if (key == KeyEvent.VK_D) {
 			player.setVelX(+5);
 		}
+		if (key == KeyEvent.VK_SPACE && !shooting) {
+			shooting = true;
+			controller.addBullet(new Bullet(player.getX(), player.getY() - 32, this));
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -150,6 +171,9 @@ public class Game extends Canvas implements Runnable {
 		}
 		if (key == KeyEvent.VK_D) {
 			player.setVelX(0);
+		}
+		if (key == KeyEvent.VK_SPACE) {
+			shooting = false;
 		}
 	}
 
@@ -173,5 +197,9 @@ public class Game extends Canvas implements Runnable {
 
 	public BufferedImage getPlayer_img() {
 		return player_img;
+	}
+
+	public BufferedImage getBullet_img() {
+		return bullet_img;
 	}
 }
