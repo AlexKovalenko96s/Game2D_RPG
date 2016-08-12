@@ -28,6 +28,9 @@ public class Game extends Canvas implements Runnable {
 	private String spriteSheetPath = "res/spaceGame.png";
 	private String backgroundPath = "res/bg_simple.png";
 
+	private int enemy_count = 1;
+	private int enemy_killed = 0;
+
 	private boolean running = false;
 	private boolean shooting = false;
 
@@ -51,7 +54,8 @@ public class Game extends Canvas implements Runnable {
 		addKeyListener(new KeyInput(this));
 
 		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet);
-		controller = new Controller(this, spriteSheet);
+		controller = new Controller(spriteSheet);
+		controller.createEnemy(enemy_count);
 	}
 
 	private synchronized void start() {
@@ -152,7 +156,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		if (key == KeyEvent.VK_SPACE && !shooting) {
 			shooting = true;
-			controller.addBullet(new Bullet(player.getX(), player.getY() - 32, spriteSheet));
+			controller.addEntity(new Bullet(player.getX(), player.getY() - 32, spriteSheet));
 		}
 	}
 
@@ -194,11 +198,19 @@ public class Game extends Canvas implements Runnable {
 		game.start();
 	}
 
-	// public BufferedImage getPlayer_img() {
-	// return player_img;
-	// }
-	//
-	// public BufferedImage getBullet_img() {
-	// return bullet_img;
-	// }
+	public int getEnemy_count() {
+		return enemy_count;
+	}
+
+	public void setEnemy_count(int enemy_count) {
+		this.enemy_count = enemy_count;
+	}
+
+	public int getEnemy_killed() {
+		return enemy_killed;
+	}
+
+	public void setEnemy_killed(int enemy_killed) {
+		this.enemy_killed = enemy_killed;
+	}
 }

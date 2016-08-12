@@ -6,11 +6,13 @@ import java.util.Random;
 import ua.kas.main.Game;
 import ua.kas.main.SpriteSheet;
 
-public class Enemy {
+public class Enemy implements Entity {
 	private double x;
 	private double y;
 
 	private Random random = new Random();
+
+	private int speed = random.nextInt(3) + 1;
 
 	private SpriteSheet spriteSheet;
 
@@ -21,9 +23,10 @@ public class Enemy {
 	}
 
 	public void tick() {
-		y += 1;
+		y += speed;
 		if (y > Game.HEIGHT * Game.SCALE) {
-			y = 0;
+			speed = random.nextInt(3) + 1;
+			y = -10;
 			x = random.nextInt(Game.WIDTH * Game.SCALE - 32);
 		}
 	}

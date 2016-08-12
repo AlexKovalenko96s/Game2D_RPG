@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import ua.kas.main.SpriteSheet;
 
-public class Bullet {
+public class Bullet implements Entity {
 
 	private double x;
 	private double y;
