@@ -1,8 +1,8 @@
-package ua.kas.main.object;
+package ua.kas.main.classes;
 
 import java.awt.Graphics;
 
-public interface Entity {
+public interface EntityA {
 
 	public void tick();
 

@@ -6,9 +6,7 @@ import java.util.Random;
 import ua.kas.main.Game;
 import ua.kas.main.SpriteSheet;
 
-public class Enemy implements Entity {
-	private double x;
-	private double y;
+public class Enemy extends GameObject implements Entity {
 
 	private Random random = new Random();
 
@@ -17,8 +15,7 @@ public class Enemy implements Entity {
 	private SpriteSheet spriteSheet;
 
 	public Enemy(double x, double y, SpriteSheet spriteSheet) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 		this.spriteSheet = spriteSheet;
 	}
 

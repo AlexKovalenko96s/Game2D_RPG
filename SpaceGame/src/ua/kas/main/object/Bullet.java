@@ -4,16 +4,12 @@ import java.awt.Graphics;
 
 import ua.kas.main.SpriteSheet;
 
-public class Bullet implements Entity {
-
-	private double x;
-	private double y;
+public class Bullet extends GameObject implements Entity {
 
 	private SpriteSheet spriteSheet;
 
 	public Bullet(double x, double y, SpriteSheet spriteSheet) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 		this.spriteSheet = spriteSheet;
 	}
 

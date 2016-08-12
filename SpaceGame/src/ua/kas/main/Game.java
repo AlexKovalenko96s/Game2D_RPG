@@ -28,7 +28,7 @@ public class Game extends Canvas implements Runnable {
 	private String spriteSheetPath = "res/spaceGame.png";
 	private String backgroundPath = "res/bg_simple.png";
 
-	private int enemy_count = 1;
+	private int enemy_count = 3;
 	private int enemy_killed = 0;
 
 	private boolean running = false;

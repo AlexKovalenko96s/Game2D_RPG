@@ -4,10 +4,7 @@ import java.awt.Graphics;
 
 import ua.kas.main.SpriteSheet;
 
-public class Player {
-
-	private double x;
-	private double y;
+public class Player extends GameObject {
 
 	private double velX = 0;
 	private double velY = 0;
@@ -15,8 +12,7 @@ public class Player {
 	private SpriteSheet spriteSheet;
 
 	public Player(double x, double y, SpriteSheet spriteSheet) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 		this.spriteSheet = spriteSheet;
 	}
 
