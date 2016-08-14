@@ -8,10 +8,13 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import ua.kas.main.classes.EntityA;
+import ua.kas.main.classes.EntityB;
 import ua.kas.main.object.Bullet;
 import ua.kas.main.object.Player;
 
@@ -34,6 +37,9 @@ public class Game extends Canvas implements Runnable {
 	private boolean running = false;
 	private boolean shooting = false;
 
+	public LinkedList<EntityA> ea;
+	public LinkedList<EntityB> eb;
+
 	private BufferedImage background_img = null;
 
 	private Thread thread;
@@ -51,10 +57,14 @@ public class Game extends Canvas implements Runnable {
 			e.printStackTrace();
 		}
 
-		addKeyListener(new KeyInput(this));
+		this.addKeyListener(new KeyInput(this));
 
 		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet);
 		controller = new Controller(spriteSheet);
+
+		ea = controller.getEa();
+		eb = controller.getEb();
+
 		controller.createEnemy(enemy_count);
 	}
 
@@ -156,7 +166,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		if (key == KeyEvent.VK_SPACE && !shooting) {
 			shooting = true;
-			controller.addEntity(new Bullet(player.getX(), player.getY() - 32, spriteSheet));
+			controller.addEntity(new Bullet(player.getX(), player.getY() - 32, spriteSheet, this));
 		}
 	}
 

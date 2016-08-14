@@ -1,12 +1,14 @@
 package ua.kas.main.object;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Random;
 
 import ua.kas.main.Game;
 import ua.kas.main.SpriteSheet;
+import ua.kas.main.classes.EntityB;
 
-public class Enemy extends GameObject implements Entity {
+public class Enemy extends GameObject implements EntityB {
 
 	private Random random = new Random();
 
@@ -30,6 +32,10 @@ public class Enemy extends GameObject implements Entity {
 
 	public void render(Graphics g) {
 		g.drawImage(spriteSheet.getEnemy(), (int) x, (int) y, null);
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle((int) x, (int) y, 32, 32);
 	}
 
 	public double getX() {

@@ -1,10 +1,12 @@
 package ua.kas.main.object;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import ua.kas.main.SpriteSheet;
+import ua.kas.main.classes.EntityA;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements EntityA {
 
 	private double velX = 0;
 	private double velY = 0;
@@ -36,6 +38,10 @@ public class Player extends GameObject {
 
 	public void render(Graphics g) {
 		g.drawImage(spriteSheet.getShip(), (int) x, (int) y, null);
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle((int) x, (int) y, 32, 32);
 	}
 
 	public double getX() {
