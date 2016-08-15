@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import ua.kas.main.Game;
-import ua.kas.main.Phisics;
 import ua.kas.main.SpriteSheet;
 import ua.kas.main.classes.EntityA;
 

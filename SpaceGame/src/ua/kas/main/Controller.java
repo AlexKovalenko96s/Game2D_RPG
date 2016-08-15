@@ -18,15 +18,17 @@ public class Controller {
 	private EntityA entityA;
 	private EntityB entityB;
 
+	private Game game;
 	private SpriteSheet spriteSheet;
 
-	public Controller(SpriteSheet spriteSheet) {
+	public Controller(SpriteSheet spriteSheet, Game game) {
 		this.spriteSheet = spriteSheet;
+		this.game = game;
 	}
 
 	public void createEnemy(int enemy_count) {
 		for (int i = 0; i < enemy_count; i++) {
-			addEntity(new Enemy(random.nextInt(640 - 32), -10, spriteSheet));
+			addEntity(new Enemy(random.nextInt(640 - 32), -10, spriteSheet, game, this));
 		}
 	}
 

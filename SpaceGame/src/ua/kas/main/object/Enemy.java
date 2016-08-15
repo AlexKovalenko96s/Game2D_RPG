@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import ua.kas.main.Controller;
 import ua.kas.main.Game;
 import ua.kas.main.SpriteSheet;
 import ua.kas.main.classes.EntityB;
@@ -15,10 +16,14 @@ public class Enemy extends GameObject implements EntityB {
 	private int speed = random.nextInt(3) + 1;
 
 	private SpriteSheet spriteSheet;
+	private Game game;
+	private Controller controller;
 
-	public Enemy(double x, double y, SpriteSheet spriteSheet) {
+	public Enemy(double x, double y, SpriteSheet spriteSheet, Game game, Controller controller) {
 		super(x, y);
 		this.spriteSheet = spriteSheet;
+		this.game = game;
+		this.controller = controller;
 	}
 
 	public void tick() {
@@ -27,6 +32,11 @@ public class Enemy extends GameObject implements EntityB {
 			speed = random.nextInt(3) + 1;
 			y = -10;
 			x = random.nextInt(Game.WIDTH * Game.SCALE - 32);
+		}
+
+		if (Phisics.Collision(this, game.ea)) {
+			controller.removeEntity(this);
+			game.setEnemy_killed(game.getEnemy_killed() + 1);
 		}
 	}
 

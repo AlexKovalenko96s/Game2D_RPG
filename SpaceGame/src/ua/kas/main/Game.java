@@ -59,8 +59,8 @@ public class Game extends Canvas implements Runnable {
 
 		this.addKeyListener(new KeyInput(this));
 
-		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet);
-		controller = new Controller(spriteSheet);
+		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet, this);
+		controller = new Controller(spriteSheet, this);
 
 		ea = controller.getEa();
 		eb = controller.getEb();
@@ -132,6 +132,12 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		player.tick();
 		controller.tick();
+
+		if (enemy_killed >= enemy_count) {
+			enemy_count += 1;
+			enemy_killed = 0;
+			controller.createEnemy(enemy_count);
+		}
 	}
 
 	private void render() {
