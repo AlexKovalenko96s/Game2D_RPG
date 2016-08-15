@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -73,6 +74,9 @@ public class Main implements ActionListener {
 			for (int x = 0; x < buttons.length; x++) {
 				for (int y = 0; y < buttons[0].length; y++) {
 					if (e.getSource().equals(buttons[x][y])) {
+						if (e.getActionCommand().equals(MouseEvent.BUTTON3)) {
+							buttons[x][y].setIcon(tile.getFlag());
+						}
 						if (counts[x][y] == MINE) {
 							if (!lose) {
 								lostGame();

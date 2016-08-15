@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 
 public class Tile {
 
-	private ImageIcon mine, zero, one, two, three, four;
+	private ImageIcon mine, zero, one, two, three, four, flag;
 
 	public Tile() {
 		try {
@@ -18,6 +18,7 @@ public class Tile {
 			two = new ImageIcon(ImageIO.read(new File("res/2.png")));
 			three = new ImageIcon(ImageIO.read(new File("res/3.png")));
 			four = new ImageIcon(ImageIO.read(new File("res/4.png")));
+			flag = new ImageIcon(ImageIO.read(new File("res/flag.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -45,5 +46,9 @@ public class Tile {
 
 	public ImageIcon getFour() {
 		return four;
+	}
+
+	public ImageIcon getFlag() {
+		return flag;
 	}
 }
