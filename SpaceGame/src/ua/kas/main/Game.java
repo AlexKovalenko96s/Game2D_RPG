@@ -47,6 +47,13 @@ public class Game extends Canvas implements Runnable {
 	public SpriteSheet spriteSheet;
 	public Player player;
 	public Controller controller;
+	public Menu menu;
+
+	private enum STATE {
+		MENU, GAME
+	}
+
+	private STATE state = STATE.MENU;
 
 	public void init() {
 		spriteSheet = new SpriteSheet(spriteSheetPath);
@@ -61,6 +68,7 @@ public class Game extends Canvas implements Runnable {
 
 		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet, this);
 		controller = new Controller(spriteSheet, this);
+		menu = new Menu();
 
 		ea = controller.getEa();
 		eb = controller.getEb();
@@ -130,8 +138,10 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		player.tick();
-		controller.tick();
+		if (state == STATE.MENU) {
+			player.tick();
+			controller.tick();
+		}
 
 		if (enemy_killed >= enemy_count) {
 			enemy_count += 1;
@@ -149,8 +159,13 @@ public class Game extends Canvas implements Runnable {
 
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(background_img, 0, 0, null);
-		player.render(g);
-		controller.render(g);
+
+		if (state == STATE.GAME) {
+			player.render(g);
+			controller.render(g);
+		} else if (state == STATE.MENU) {
+			menu.render(g);
+		}
 		g.dispose();
 		bs.show();
 	}
@@ -158,41 +173,45 @@ public class Game extends Canvas implements Runnable {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if (key == KeyEvent.VK_W) {
-			player.setVelY(-5);
-		}
-		if (key == KeyEvent.VK_S) {
-			player.setVelY(+5);
-		}
-		if (key == KeyEvent.VK_A) {
-			player.setVelX(-5);
-		}
-		if (key == KeyEvent.VK_D) {
-			player.setVelX(+5);
-		}
-		if (key == KeyEvent.VK_SPACE && !shooting) {
-			shooting = true;
-			controller.addEntity(new Bullet(player.getX(), player.getY() - 32, spriteSheet, this));
+		if (state == STATE.GAME) {
+			if (key == KeyEvent.VK_W) {
+				player.setVelY(-5);
+			}
+			if (key == KeyEvent.VK_S) {
+				player.setVelY(+5);
+			}
+			if (key == KeyEvent.VK_A) {
+				player.setVelX(-5);
+			}
+			if (key == KeyEvent.VK_D) {
+				player.setVelX(+5);
+			}
+			if (key == KeyEvent.VK_SPACE && !shooting) {
+				shooting = true;
+				controller.addEntity(new Bullet(player.getX(), player.getY() - 32, spriteSheet, this));
+			}
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if (key == KeyEvent.VK_W) {
-			player.setVelY(0);
-		}
-		if (key == KeyEvent.VK_S) {
-			player.setVelY(0);
-		}
-		if (key == KeyEvent.VK_A) {
-			player.setVelX(0);
-		}
-		if (key == KeyEvent.VK_D) {
-			player.setVelX(0);
-		}
-		if (key == KeyEvent.VK_SPACE) {
-			shooting = false;
+		if (state == STATE.GAME) {
+			if (key == KeyEvent.VK_W) {
+				player.setVelY(0);
+			}
+			if (key == KeyEvent.VK_S) {
+				player.setVelY(0);
+			}
+			if (key == KeyEvent.VK_A) {
+				player.setVelX(0);
+			}
+			if (key == KeyEvent.VK_D) {
+				player.setVelX(0);
+			}
+			if (key == KeyEvent.VK_SPACE) {
+				shooting = false;
+			}
 		}
 	}
 
