@@ -49,11 +49,11 @@ public class Game extends Canvas implements Runnable {
 	public Controller controller;
 	public Menu menu;
 
-	private enum STATE {
+	public static enum STATE {
 		MENU, GAME
 	}
 
-	private STATE state = STATE.MENU;
+	public static STATE state = STATE.MENU;
 
 	public void init() {
 		spriteSheet = new SpriteSheet(spriteSheetPath);
@@ -65,6 +65,7 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		this.addKeyListener(new KeyInput(this));
+		this.addMouseListener(new MouseInput());
 
 		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet, this);
 		controller = new Controller(spriteSheet, this);
@@ -138,7 +139,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		if (state == STATE.MENU) {
+		if (state == STATE.GAME) {
 			player.tick();
 			controller.tick();
 		}
@@ -159,7 +160,6 @@ public class Game extends Canvas implements Runnable {
 
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(background_img, 0, 0, null);
-
 		if (state == STATE.GAME) {
 			player.render(g);
 			controller.render(g);
@@ -196,22 +196,20 @@ public class Game extends Canvas implements Runnable {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if (state == STATE.GAME) {
-			if (key == KeyEvent.VK_W) {
-				player.setVelY(0);
-			}
-			if (key == KeyEvent.VK_S) {
-				player.setVelY(0);
-			}
-			if (key == KeyEvent.VK_A) {
-				player.setVelX(0);
-			}
-			if (key == KeyEvent.VK_D) {
-				player.setVelX(0);
-			}
-			if (key == KeyEvent.VK_SPACE) {
-				shooting = false;
-			}
+		if (key == KeyEvent.VK_W) {
+			player.setVelY(0);
+		}
+		if (key == KeyEvent.VK_S) {
+			player.setVelY(0);
+		}
+		if (key == KeyEvent.VK_A) {
+			player.setVelX(0);
+		}
+		if (key == KeyEvent.VK_D) {
+			player.setVelX(0);
+		}
+		if (key == KeyEvent.VK_SPACE) {
+			shooting = false;
 		}
 	}
 
