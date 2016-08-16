@@ -1,6 +1,7 @@
 package ua.kas.main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -30,6 +31,8 @@ public class Game extends Canvas implements Runnable {
 
 	private String spriteSheetPath = "res/spaceGame.png";
 	private String backgroundPath = "res/bg_simple.png";
+
+	public static int health = 100 * 2;
 
 	private int enemy_count = 3;
 	private int enemy_killed = 0;
@@ -67,8 +70,8 @@ public class Game extends Canvas implements Runnable {
 		this.addKeyListener(new KeyInput(this));
 		this.addMouseListener(new MouseInput());
 
-		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet, this);
 		controller = new Controller(spriteSheet, this);
+		player = new Player((WIDTH * SCALE) / 2, ((HEIGHT * SCALE) / 6) * 5, spriteSheet, this, controller);
 		menu = new Menu();
 
 		ea = controller.getEa();
@@ -163,6 +166,15 @@ public class Game extends Canvas implements Runnable {
 		if (state == STATE.GAME) {
 			player.render(g);
 			controller.render(g);
+
+			g.setColor(Color.GRAY);
+			g.fill3DRect(5, 5, 200, 20, true);
+
+			g.setColor(Color.GREEN);
+			g.fill3DRect(5, 5, health, 20, true);
+
+			g.setColor(Color.WHITE);
+			g.drawRect(5, 5, 200, 20);
 		} else if (state == STATE.MENU) {
 			menu.render(g);
 		}
@@ -188,7 +200,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			if (key == KeyEvent.VK_SPACE && !shooting) {
 				shooting = true;
-				controller.addEntity(new Bullet(player.getX(), player.getY() - 32, spriteSheet, this));
+				controller.addEntity(new Bullet(player.getX(), player.getY() - 32, spriteSheet));
 			}
 		}
 	}

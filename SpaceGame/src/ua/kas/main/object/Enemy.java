@@ -7,6 +7,7 @@ import java.util.Random;
 import ua.kas.main.Controller;
 import ua.kas.main.Game;
 import ua.kas.main.SpriteSheet;
+import ua.kas.main.classes.EntityA;
 import ua.kas.main.classes.EntityB;
 
 public class Enemy extends GameObject implements EntityB {
@@ -34,9 +35,13 @@ public class Enemy extends GameObject implements EntityB {
 			x = random.nextInt(Game.WIDTH * Game.SCALE - 32);
 		}
 
-		if (Phisics.Collision(this, game.ea)) {
-			controller.removeEntity(this);
-			game.setEnemy_killed(game.getEnemy_killed() + 1);
+		for (int i = 0; i < game.ea.size(); i++) {
+			EntityA tempEnt = game.ea.get(i);
+			if (Phisics.Collision(this, tempEnt)) {
+				controller.removeEntity(tempEnt);
+				controller.removeEntity(this);
+				game.setEnemy_killed(game.getEnemy_killed() + 1);
+			}
 		}
 	}
 

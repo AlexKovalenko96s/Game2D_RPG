@@ -3,9 +3,11 @@ package ua.kas.main.object;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import ua.kas.main.Controller;
 import ua.kas.main.Game;
 import ua.kas.main.SpriteSheet;
 import ua.kas.main.classes.EntityA;
+import ua.kas.main.classes.EntityB;
 
 public class Player extends GameObject implements EntityA {
 
@@ -13,12 +15,13 @@ public class Player extends GameObject implements EntityA {
 	private double velY = 0;
 
 	private SpriteSheet spriteSheet;
-
+	private Controller controller;
 	private Game game;
 
-	public Player(double x, double y, SpriteSheet spriteSheet, Game game) {
+	public Player(double x, double y, SpriteSheet spriteSheet, Game game, Controller controller) {
 		super(x, y);
 		this.spriteSheet = spriteSheet;
+		this.controller = controller;
 		this.game = game;
 	}
 
@@ -39,8 +42,13 @@ public class Player extends GameObject implements EntityA {
 			y = 480 - 32;
 		}
 
-		if (Phisics.Collision(this, game.eb)) {
-			System.err.println("CRASH");
+		for (int i = 0; i < game.eb.size(); i++) {
+			EntityB tempEnt = game.eb.get(i);
+			if (Phisics.Collision(this, tempEnt)) {
+				controller.removeEntity(tempEnt);
+				Game.health -= 10;
+				game.setEnemy_killed(game.getEnemy_killed() + 1);
+			}
 		}
 	}
 
