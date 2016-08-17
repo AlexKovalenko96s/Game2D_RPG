@@ -3,6 +3,8 @@ package ua.kas.main;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,6 +12,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+
+import ua.kas.main.object.Enemy;
+import ua.kas.main.object.Player;
+import ua.kas.main.object.Shot;
 
 public class Game extends Canvas implements Runnable {
 
@@ -26,6 +32,11 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 
 	private BufferedImage background_img = null;
+
+	private SpriteSheet spriteSheet;
+	private Player player;
+	private Shot shot;
+	private Enemy enemy;
 
 	private synchronized void start() {
 		if (running) {
@@ -50,11 +61,57 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void init() {
+		spriteSheet = new SpriteSheet("res/spriteSheel.png");
+
 		try {
 			background_img = ImageIO.read(new File("res/background.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		this.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// not used
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				int key = e.getKeyCode();
+
+				if (key == KeyEvent.VK_A) {
+					player.setVelX(0);
+				}
+
+				if (key == KeyEvent.VK_D) {
+					player.setVelX(0);
+				}
+
+				if (key == KeyEvent.VK_SPACE) {
+
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+
+				if (key == KeyEvent.VK_A) {
+					player.setVelX(-5);
+				}
+
+				if (key == KeyEvent.VK_D) {
+					player.setVelX(+5);
+				}
+
+				if (key == KeyEvent.VK_SPACE) {
+
+				}
+			}
+		});
+
+		player = new Player(((WIDTH * SCALE) / 2), ((HEIGHT * SCALE) / 8) * 7, spriteSheet);
 	}
 
 	@Override
@@ -94,7 +151,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void tick() {
-
+		player.tick();
 	}
 
 	public void render() {
@@ -105,7 +162,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(background_img, 0, 0, null);
-
+		player.render(g);
 		g.dispose();
 		bs.show();
 	}
