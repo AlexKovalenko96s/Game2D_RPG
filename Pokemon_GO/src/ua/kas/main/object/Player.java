@@ -37,4 +37,12 @@ public class Player extends GameObject implements EntityA {
 	public void setVelX(double velX) {
 		this.velX = velX;
 	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
 }

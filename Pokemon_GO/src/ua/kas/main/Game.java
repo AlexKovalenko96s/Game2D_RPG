@@ -13,7 +13,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import ua.kas.main.object.Enemy;
 import ua.kas.main.object.Player;
 import ua.kas.main.object.Shot;
 
@@ -25,6 +24,9 @@ public class Game extends Canvas implements Runnable {
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 2;
 
+	public int enemy_count = 3;
+	public int enemy_killed = 0;
+
 	private static final String TITLE = "Pokemon_GO";
 
 	private boolean running = false;
@@ -33,10 +35,9 @@ public class Game extends Canvas implements Runnable {
 
 	private BufferedImage background_img = null;
 
+	private Controller controller;
 	private SpriteSheet spriteSheet;
 	private Player player;
-	private Shot shot;
-	private Enemy enemy;
 
 	private synchronized void start() {
 		if (running) {
@@ -106,12 +107,15 @@ public class Game extends Canvas implements Runnable {
 				}
 
 				if (key == KeyEvent.VK_SPACE) {
-
+					controller.addEntity(new Shot(player.getX(), player.getY() - 32, spriteSheet));
 				}
 			}
 		});
 
+		controller = new Controller(spriteSheet);
 		player = new Player(((WIDTH * SCALE) / 2), ((HEIGHT * SCALE) / 8) * 7, spriteSheet);
+
+		controller.createEnemy(enemy_count);
 	}
 
 	@Override
@@ -152,6 +156,13 @@ public class Game extends Canvas implements Runnable {
 
 	public void tick() {
 		player.tick();
+		controller.tick();
+
+		if (enemy_killed >= enemy_count) {
+			enemy_count++;
+			enemy_killed = 0;
+			controller.createEnemy(enemy_count);
+		}
 	}
 
 	public void render() {
@@ -163,6 +174,7 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(background_img, 0, 0, null);
 		player.render(g);
+		controller.render(g);
 		g.dispose();
 		bs.show();
 	}
