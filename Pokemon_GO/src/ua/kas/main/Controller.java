@@ -16,17 +16,33 @@ public class Controller {
 
 	private Random random = new Random();
 
+	private Game game;
 	private SpriteSheet spriteSheet;
 	private EntityA entityA;
 	private EntityB entityB;
 
-	public Controller(SpriteSheet spriteSheet) {
+	public Controller(SpriteSheet spriteSheet, Game game) {
 		this.spriteSheet = spriteSheet;
+		this.game = game;
 	}
 
 	public void createEnemy(int enemy_count) {
 		for (int i = 0; i < enemy_count; i++) {
-			addEntity(new Enemy(random.nextInt(640 - 32), -10));
+			int n = random.nextInt(4);
+			Image img = null;
+			if (n == 0) {
+				img = spriteSheet.getEnemy1();
+			}
+			if (n == 1) {
+				img = spriteSheet.getEnemy2();
+			}
+			if (n == 2) {
+				img = spriteSheet.getEnemy3();
+			}
+			if (n == 3) {
+				img = spriteSheet.getEnemy4();
+			}
+			addEntity(new Enemy(random.nextInt(640 - 32), -10, img, game, this));
 		}
 	}
 
@@ -48,23 +64,7 @@ public class Controller {
 		}
 		for (int i = 0; i < al_entityB.size(); i++) {
 			entityB = al_entityB.get(i);
-
-			int n = random.nextInt(3);
-			Image img = null;
-			if (n == 0) {
-				img = spriteSheet.getEnemy1();
-			}
-			if (n == 1) {
-				img = spriteSheet.getEnemy2();
-			}
-			if (n == 2) {
-				img = spriteSheet.getEnemy3();
-			}
-			if (n == 3) {
-				img = spriteSheet.getEnemy4();
-			}
-
-			entityB.render(g, img);
+			entityB.render(g);
 		}
 	}
 
@@ -82,5 +82,19 @@ public class Controller {
 
 	public void removeEntity(EntityB block) {
 		al_entityB.remove(block);
+	}
+
+	public ArrayList<EntityA> getAl_entityA() {
+		return al_entityA;
+	}
+
+	public ArrayList<EntityB> getAl_entityB() {
+		return al_entityB;
+	}
+
+	public void clearAllEntity() {
+		al_entityA.clear();
+		al_entityB.clear();
+
 	}
 }

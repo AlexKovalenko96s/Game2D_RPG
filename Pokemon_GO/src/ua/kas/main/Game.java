@@ -1,7 +1,9 @@
 package ua.kas.main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,10 +11,13 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import ua.kas.main.entity.EntityA;
+import ua.kas.main.entity.EntityB;
 import ua.kas.main.object.Player;
 import ua.kas.main.object.Shot;
 
@@ -26,14 +31,21 @@ public class Game extends Canvas implements Runnable {
 
 	public int enemy_count = 3;
 	public int enemy_killed = 0;
+	public int health = 10;
+	public int score = 0;
 
 	private static final String TITLE = "Pokemon_GO";
 
 	private boolean running = false;
+	private boolean shooting = false;
+	private boolean dead = false;
 
 	private Thread thread;
 
 	private BufferedImage background_img = null;
+
+	public ArrayList<EntityA> entityA;
+	public ArrayList<EntityB> entityB;
 
 	private Controller controller;
 	private SpriteSheet spriteSheet;
@@ -90,7 +102,9 @@ public class Game extends Canvas implements Runnable {
 				}
 
 				if (key == KeyEvent.VK_SPACE) {
-
+					if (shooting && !dead) {
+						shooting = false;
+					}
 				}
 			}
 
@@ -107,13 +121,32 @@ public class Game extends Canvas implements Runnable {
 				}
 
 				if (key == KeyEvent.VK_SPACE) {
-					controller.addEntity(new Shot(player.getX(), player.getY() - 32, spriteSheet));
+					if (!shooting && !dead) {
+						controller.addEntity(new Shot(player.getX(), player.getY() - 32, spriteSheet));
+						shooting = true;
+					}
+					if (dead) {
+						dead = false;
+						score = 0;
+						health = 100;
+						enemy_count = 3;
+						enemy_killed = 0;
+						controller.clearAllEntity();
+						controller.createEnemy(enemy_count);
+					}
+				}
+
+				if (key == KeyEvent.VK_ESCAPE) {
+					System.exit(0);
 				}
 			}
 		});
 
-		controller = new Controller(spriteSheet);
-		player = new Player(((WIDTH * SCALE) / 2), ((HEIGHT * SCALE) / 8) * 7, spriteSheet);
+		controller = new Controller(spriteSheet, this);
+		player = new Player(((WIDTH * SCALE) / 2), ((HEIGHT * SCALE) / 8) * 7, spriteSheet, this, controller);
+
+		entityA = controller.getAl_entityA();
+		entityB = controller.getAl_entityB();
 
 		controller.createEnemy(enemy_count);
 	}
@@ -172,9 +205,46 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
-		g.drawImage(background_img, 0, 0, null);
-		player.render(g);
-		controller.render(g);
+
+		if (health <= 0) {
+			dead = true;
+		}
+
+		if (!dead) {
+			g.drawImage(background_img, 0, 0, null);
+			player.render(g);
+			controller.render(g);
+
+			g.setColor(new Color(207, 202, 215));
+			g.fillRect(0, 0, WIDTH * SCALE + 20, 40);
+
+			g.setColor(Color.WHITE);
+			g.fill3DRect(5, 5, 100 * SCALE, 30, true);
+
+			g.setColor(Color.GREEN);
+			g.fill3DRect(5, 5, health * SCALE, 30, true);
+
+			g.setColor(Color.RED);
+			g.drawRect(5, 5, 100 * SCALE, 30);
+
+			Font font = new Font("arial", Font.BOLD, 20);
+			g.setFont(font);
+			g.drawString("Score : " + score, WIDTH - 100, 28);
+			g.drawString("HP " + health, 10, 28);
+		}
+
+		if (dead) {
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, WIDTH * SCALE + 20, HEIGHT * SCALE + 20);
+			g.setColor(Color.WHITE);
+			Font fontDead = new Font("arial", Font.BOLD, 50);
+			g.setFont(fontDead);
+			g.drawString("GAME OVER!", WIDTH - 150, HEIGHT + 10);
+			fontDead = new Font("arial", Font.BOLD, 20);
+			g.setFont(fontDead);
+			g.drawString("Press <<Space>> for restart or <<Esc>> for exit", WIDTH - 220, HEIGHT + 40);
+		}
+
 		g.dispose();
 		bs.show();
 	}
@@ -195,5 +265,25 @@ public class Game extends Canvas implements Runnable {
 		frame.setVisible(true);
 
 		game.start();
+	}
+
+	public void setEnemy_count(int enemy_count) {
+		this.enemy_count = enemy_count;
+	}
+
+	public void setEnemy_killed(int enemy_killed) {
+		this.enemy_killed = enemy_killed;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getEnemy_killed() {
+		return enemy_killed;
+	}
+
+	public int getScore() {
+		return score;
 	}
 }

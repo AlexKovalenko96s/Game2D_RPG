@@ -1,12 +1,13 @@
 package ua.kas.main.entity;
 
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Rectangle;
 
 public interface EntityB {
 
 	public void tick();
 
-	public void render(Graphics g, Image img);
+	public void render(Graphics g);
 
+	public Rectangle getBounds();
 }
