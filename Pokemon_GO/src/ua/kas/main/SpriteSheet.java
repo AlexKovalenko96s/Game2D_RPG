@@ -12,7 +12,12 @@ public class SpriteSheet {
 
 	private BufferedImage sheet;
 
-	private Image player, enemy1, enemy2, enemy3, enemy4, shot;
+	private Image player;
+	public BufferedImage[] enemy1 = new BufferedImage[2];
+	public BufferedImage[] enemy2 = new BufferedImage[2];
+	public BufferedImage[] enemy3 = new BufferedImage[2];
+	public BufferedImage[] enemy4 = new BufferedImage[2];
+	public BufferedImage[] shot = new BufferedImage[4];
 
 	private ImageIcon img;
 
@@ -22,41 +27,47 @@ public class SpriteSheet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// player
 		img = new ImageIcon(sheet.getSubimage(1 * 32 - 32, 1 * 32 - 32, 32, 32));
 		player = img.getImage();
+
+		// shot
 		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 1 * 32 - 32, 32, 32));
-		shot = img.getImage();
+		shot[0] = (BufferedImage) img.getImage();
+		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 2 * 32 - 32, 32, 32));
+		shot[1] = (BufferedImage) img.getImage();
+		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 3 * 32 - 32, 32, 32));
+		shot[2] = (BufferedImage) img.getImage();
+		img = new ImageIcon(sheet.getSubimage(2 * 32 - 32, 4 * 32 - 32, 32, 32));
+		shot[3] = (BufferedImage) img.getImage();
+
+		// enemy1
 		img = new ImageIcon(sheet.getSubimage(3 * 32 - 32, 1 * 32 - 32, 32, 32));
-		enemy1 = img.getImage();
+		enemy1[0] = (BufferedImage) img.getImage();
+		img = new ImageIcon(sheet.getSubimage(3 * 32 - 32, 2 * 32 - 32, 32, 32));
+		enemy1[1] = (BufferedImage) img.getImage();
+
+		// enemy2
 		img = new ImageIcon(sheet.getSubimage(4 * 32 - 32, 1 * 32 - 32, 32, 32));
-		enemy2 = img.getImage();
+		enemy2[0] = (BufferedImage) img.getImage();
+		img = new ImageIcon(sheet.getSubimage(4 * 32 - 32, 2 * 32 - 32, 32, 32));
+		enemy2[1] = (BufferedImage) img.getImage();
+
+		// enemy3
 		img = new ImageIcon(sheet.getSubimage(5 * 32 - 32, 1 * 32 - 32, 32, 32));
-		enemy3 = img.getImage();
+		enemy3[0] = (BufferedImage) img.getImage();
+		img = new ImageIcon(sheet.getSubimage(5 * 32 - 32, 2 * 32 - 32, 32, 32));
+		enemy3[1] = (BufferedImage) img.getImage();
+
+		// enemy4
 		img = new ImageIcon(sheet.getSubimage(5 * 32 - 32, 3 * 32 - 32, 32, 32));
-		enemy4 = img.getImage();
+		enemy4[0] = (BufferedImage) img.getImage();
+		img = new ImageIcon(sheet.getSubimage(5 * 32 - 32, 4 * 32 - 32, 32, 32));
+		enemy4[1] = (BufferedImage) img.getImage();
 	}
 
 	public Image getPlayer() {
 		return player;
-	}
-
-	public Image getEnemy1() {
-		return enemy1;
-	}
-
-	public Image getEnemy2() {
-		return enemy2;
-	}
-
-	public Image getEnemy3() {
-		return enemy3;
-	}
-
-	public Image getEnemy4() {
-		return enemy4;
-	}
-
-	public Image getShot() {
-		return shot;
 	}
 }

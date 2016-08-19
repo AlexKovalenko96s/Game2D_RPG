@@ -1,14 +1,15 @@
 package ua.kas.main.object;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import ua.kas.main.Controller;
 import ua.kas.main.Game;
 import ua.kas.main.entity.EntityA;
 import ua.kas.main.entity.EntityB;
+import ua.kas.main.libs.Animation;
 
 public class Enemy extends GameObject implements EntityB {
 
@@ -16,16 +17,19 @@ public class Enemy extends GameObject implements EntityB {
 
 	private int speed = random.nextInt(3) + 1;
 
-	private Image img;
+	public BufferedImage[] img;
 
 	private Game game;
 	private Controller controller;
+	public Animation animation;
 
-	public Enemy(double x, double y, Image img, Game game, Controller controller) {
+	public Enemy(double x, double y, BufferedImage[] img, Game game, Controller controller) {
 		super(x, y);
 		this.img = img;
 		this.game = game;
 		this.controller = controller;
+
+		animation = new Animation(5, img[0], img[1]);
 	}
 
 	@Override
@@ -33,7 +37,7 @@ public class Enemy extends GameObject implements EntityB {
 		y += speed;
 		if (y >= Game.HEIGHT * Game.SCALE) {
 			speed = random.nextInt(3) + 1;
-			y = 0;
+			y = -10;
 			x = random.nextInt(Game.WIDTH * Game.SCALE - 32);
 		}
 
@@ -46,11 +50,12 @@ public class Enemy extends GameObject implements EntityB {
 				game.setScore(game.getScore() + 1);
 			}
 		}
+		animation.runAnimation();
 	}
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(img, (int) x, (int) y, null);
+		animation.drawAnimation(g, x, y, 0);
 	}
 
 	@Override

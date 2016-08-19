@@ -1,12 +1,13 @@
 package ua.kas.main;
 
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
 import ua.kas.main.entity.EntityA;
 import ua.kas.main.entity.EntityB;
+import ua.kas.main.libs.Animation;
 import ua.kas.main.object.Enemy;
 
 public class Controller {
@@ -20,6 +21,7 @@ public class Controller {
 	private SpriteSheet spriteSheet;
 	private EntityA entityA;
 	private EntityB entityB;
+	public Animation animation;
 
 	public Controller(SpriteSheet spriteSheet, Game game) {
 		this.spriteSheet = spriteSheet;
@@ -29,18 +31,22 @@ public class Controller {
 	public void createEnemy(int enemy_count) {
 		for (int i = 0; i < enemy_count; i++) {
 			int n = random.nextInt(4);
-			Image img = null;
+			BufferedImage[] img = new BufferedImage[2];
 			if (n == 0) {
-				img = spriteSheet.getEnemy1();
+				img[0] = spriteSheet.enemy1[0];
+				img[1] = spriteSheet.enemy1[1];
 			}
 			if (n == 1) {
-				img = spriteSheet.getEnemy2();
+				img[0] = spriteSheet.enemy2[0];
+				img[1] = spriteSheet.enemy2[1];
 			}
 			if (n == 2) {
-				img = spriteSheet.getEnemy3();
+				img[0] = spriteSheet.enemy3[0];
+				img[1] = spriteSheet.enemy3[1];
 			}
 			if (n == 3) {
-				img = spriteSheet.getEnemy4();
+				img[0] = spriteSheet.enemy4[0];
+				img[1] = spriteSheet.enemy4[1];
 			}
 			addEntity(new Enemy(random.nextInt(640 - 32), -10, img, game, this));
 		}
