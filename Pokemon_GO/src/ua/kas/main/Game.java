@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
 
 	public int enemy_count = 3;
 	public int enemy_killed = 0;
-	public int health = 10;
+	public int health = 100;
 	public int score = 0;
 
 	private static final String TITLE = "Pokemon_GO";
@@ -43,6 +43,8 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 
 	private BufferedImage background_img = null;
+	private BufferedImage menuBackground_img = null;
+	private BufferedImage logoInGame_img = null;
 
 	public ArrayList<EntityA> entityA;
 	public ArrayList<EntityB> entityB;
@@ -50,6 +52,13 @@ public class Game extends Canvas implements Runnable {
 	private Controller controller;
 	private SpriteSheet spriteSheet;
 	private Player player;
+	private Menu menu;
+
+	public static enum STATE {
+		MENU, GAME
+	}
+
+	public static STATE state = STATE.MENU;
 
 	private synchronized void start() {
 		if (running) {
@@ -78,6 +87,8 @@ public class Game extends Canvas implements Runnable {
 
 		try {
 			background_img = ImageIO.read(new File("res/background.png"));
+			logoInGame_img = ImageIO.read(new File("res/logoInGame.png"));
+			menuBackground_img = ImageIO.read(new File("res/menuBackground.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -137,13 +148,28 @@ public class Game extends Canvas implements Runnable {
 				}
 
 				if (key == KeyEvent.VK_ESCAPE) {
-					System.exit(0);
+					if (state == STATE.MENU) {
+						System.exit(0);
+					}
+					if (state == STATE.GAME) {
+						state = STATE.MENU;
+						dead = false;
+						score = 0;
+						health = 100;
+						enemy_count = 3;
+						enemy_killed = 0;
+						controller.clearAllEntity();
+						controller.createEnemy(enemy_count);
+					}
 				}
 			}
 		});
 
+		this.addMouseListener(new MouseInput());
+
 		controller = new Controller(spriteSheet, this);
 		player = new Player(((WIDTH * SCALE) / 2), ((HEIGHT * SCALE) / 8) * 7, spriteSheet, this, controller);
+		menu = new Menu();
 
 		entityA = controller.getAl_entityA();
 		entityB = controller.getAl_entityB();
@@ -188,8 +214,10 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void tick() {
-		player.tick();
-		controller.tick();
+		if (state == STATE.GAME) {
+			player.tick();
+			controller.tick();
+		}
 
 		if (enemy_killed >= enemy_count) {
 			enemy_count++;
@@ -210,13 +238,15 @@ public class Game extends Canvas implements Runnable {
 			dead = true;
 		}
 
-		if (!dead) {
+		if (!dead && state == STATE.GAME) {
 			g.drawImage(background_img, 0, 0, null);
 			player.render(g);
 			controller.render(g);
 
 			g.setColor(new Color(207, 202, 215));
 			g.fillRect(0, 0, WIDTH * SCALE + 20, 40);
+
+			g.drawImage(logoInGame_img, WIDTH + 100, 2, null);
 
 			g.setColor(Color.WHITE);
 			g.fill3DRect(5, 5, 100 * SCALE, 30, true);
@@ -233,7 +263,7 @@ public class Game extends Canvas implements Runnable {
 			g.drawString("HP " + health, 10, 28);
 		}
 
-		if (dead) {
+		if (dead && state == STATE.GAME) {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, WIDTH * SCALE + 20, HEIGHT * SCALE + 20);
 			g.setColor(Color.WHITE);
@@ -243,6 +273,11 @@ public class Game extends Canvas implements Runnable {
 			fontDead = new Font("arial", Font.BOLD, 20);
 			g.setFont(fontDead);
 			g.drawString("Press <<Space>> for restart or <<Esc>> for exit", WIDTH - 220, HEIGHT + 40);
+		}
+
+		if (state == STATE.MENU) {
+			g.drawImage(menuBackground_img, 0, 0, null);
+			menu.render(g);
 		}
 
 		g.dispose();
