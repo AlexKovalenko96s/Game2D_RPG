@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 
 import ua.kas.main.entity.EntityA;
@@ -84,6 +87,21 @@ public class Game extends Canvas implements Runnable {
 
 	public void init() {
 		spriteSheet = new SpriteSheet("res/spriteSheel.png");
+
+		playSound();
+
+		// AudioInputStream inputStream;
+		// try {
+		// inputStream = AudioSystem.getAudioInputStream(new
+		// File("res/PokemonRuOST.wav"));
+		// Clip clip = AudioSystem.getClip();
+		// clip.open(inputStream);
+		// clip.loop(Clip.LOOP_CONTINUOUSLY);
+		// Thread.sleep(10000);
+		// } catch (UnsupportedAudioFileException | IOException |
+		// LineUnavailableException | InterruptedException e1) {
+		// e1.printStackTrace();
+		// }
 
 		try {
 			background_img = ImageIO.read(new File("res/background.png"));
@@ -282,6 +300,23 @@ public class Game extends Canvas implements Runnable {
 
 		g.dispose();
 		bs.show();
+	}
+
+	public static synchronized void playSound() {
+		new Thread(new Runnable() {
+			// The wrapper thread is unnecessary, unless it blocks on the
+			// Clip finishing; see comments.
+			public void run() {
+				try {
+					Clip clip = AudioSystem.getClip();
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("res/PokemonRuOST.mp3"));
+					clip.open(inputStream);
+					clip.start();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}).start();
 	}
 
 	public static void main(String[] args) {
