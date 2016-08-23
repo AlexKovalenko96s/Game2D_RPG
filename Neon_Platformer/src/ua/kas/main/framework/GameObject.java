@@ -1,6 +1,7 @@
 package ua.kas.main.framework;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.LinkedList;
 
 public abstract class GameObject {
@@ -20,21 +21,41 @@ public abstract class GameObject {
 
 	public abstract void render(Graphics g);
 
-	public abstract float getX();
+	public abstract Rectangle getBounds();
 
-	public abstract void setX(float x);
+	public float getX() {
+		return x;
+	}
 
-	public abstract float getY();
+	public void setX(float x) {
+		this.x = x;
+	}
 
-	public abstract void setY(float y);
+	public float getY() {
+		return y;
+	}
 
-	public abstract float getVelX();
+	public void setY(float y) {
+		this.y = y;
+	}
 
-	public abstract void setVelX(float velX);
+	public float getVelX() {
+		return velX;
+	}
 
-	public abstract float getVelY();
+	public void setVelX(float velX) {
+		this.velX = velX;
+	}
 
-	public abstract void setVelY(float velY);
+	public float getVelY() {
+		return velY;
+	}
 
-	public abstract ObjectId getId();
+	public void setVelY(float velY) {
+		this.velY = velY;
+	}
+
+	public ObjectId getId() {
+		return id;
+	}
 }

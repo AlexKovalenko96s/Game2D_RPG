@@ -8,9 +8,6 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import ua.kas.main.framework.ObjectId;
-import ua.kas.main.object.Test;
-
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,7 +26,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void init() {
 		handler = new Handler();
-		handler.addObject(new Test(100, 100, ObjectId.Test));
+		handler.createLevel();
 	}
 
 	public synchronized void start() {
