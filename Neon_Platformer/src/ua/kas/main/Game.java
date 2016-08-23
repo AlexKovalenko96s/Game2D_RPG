@@ -8,6 +8,9 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import ua.kas.main.framework.ObjectId;
+import ua.kas.main.object.Test;
+
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,6 +25,13 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 
+	public Handler handler;
+
+	private void init() {
+		handler = new Handler();
+		handler.addObject(new Test(100, 100, ObjectId.Test));
+	}
+
 	public synchronized void start() {
 		if (running) {
 			return;
@@ -33,6 +43,7 @@ public class Game extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+		init();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
 		double ns = 1000000000 / amountOfTicks;
@@ -63,7 +74,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-
+		handler.tick();
 	}
 
 	private void render() {
@@ -76,6 +87,8 @@ public class Game extends Canvas implements Runnable {
 
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, WIDTH * SCALE + 10, HEIGHT * SCALE + 10);
+
+		handler.render(g);
 
 		g.dispose();
 		bs.show();
