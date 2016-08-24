@@ -9,6 +9,9 @@ public abstract class GameObject {
 	protected float x, y;
 	protected float velX = 0, velY = 0;
 
+	protected boolean falling = true;
+	protected boolean jumping = true;
+
 	protected ObjectId id;
 
 	public GameObject(float x, float y, ObjectId id) {
@@ -53,6 +56,22 @@ public abstract class GameObject {
 
 	public void setVelY(float velY) {
 		this.velY = velY;
+	}
+
+	public boolean isFalling() {
+		return falling;
+	}
+
+	public void setFalling(boolean falling) {
+		this.falling = falling;
+	}
+
+	public boolean isJumping() {
+		return jumping;
+	}
+
+	public void setJumping(boolean jumping) {
+		this.jumping = jumping;
 	}
 
 	public ObjectId getId() {

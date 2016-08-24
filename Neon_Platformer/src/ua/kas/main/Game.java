@@ -8,13 +8,16 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import ua.kas.main.framework.ObjectId;
+import ua.kas.main.object.Player;
+
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final int WIDTH = 360;
 	public static final int HEIGHT = WIDTH / 12 * 9;
-	public static final int SCALE = 2;
+	public static final int SCALE = 3;
 
 	private static final String TITLE = "Neon Platform Game Prototype";
 
@@ -26,6 +29,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void init() {
 		handler = new Handler();
+		handler.addObject(new Player(100, 100, ObjectId.Player));
 		handler.createLevel();
 	}
 
