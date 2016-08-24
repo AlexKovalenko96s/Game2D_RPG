@@ -29,8 +29,10 @@ public class Game extends Canvas implements Runnable {
 
 	private void init() {
 		handler = new Handler();
-		handler.addObject(new Player(100, 100, ObjectId.Player));
+		handler.addObject(new Player(100, 100, ObjectId.Player, handler));
 		handler.createLevel();
+
+		this.addKeyListener(new KeyInput(handler));
 	}
 
 	public synchronized void start() {
@@ -44,6 +46,7 @@ public class Game extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+		requestFocus();
 		init();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;

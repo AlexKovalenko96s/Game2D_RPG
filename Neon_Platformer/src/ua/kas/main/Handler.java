@@ -36,8 +36,20 @@ public class Handler {
 	}
 
 	public void createLevel() {
-		for (int i = 0; i < (Game.WIDTH * Game.SCALE + 32) / 32; i++) {
-			addObject(new Block(i * 32, Game.HEIGHT * Game.SCALE + 10 - 32, ObjectId.Block));
+		for (int i = 0; i < (Game.HEIGHT * Game.SCALE + 32 + 10) / 32; i++) {
+			addObject(new Block(0, i * 32 - 32, ObjectId.Block));
+		}
+
+		for (int i = 0; i < (Game.HEIGHT * Game.SCALE + 32 + 10) / 32; i++) {
+			addObject(new Block(Game.WIDTH * Game.SCALE - 32 + 10, i * 32 - 32, ObjectId.Block));
+		}
+
+		for (int i = 0; i < (Game.WIDTH * Game.SCALE + 32 + 10) / 32; i++) {
+			addObject(new Block(i * 32 - 32, Game.HEIGHT * Game.SCALE + 10 - 32, ObjectId.Block));
+		}
+
+		for (int i = 0; i < 6; i++) {
+			addObject(new Block((i + 10) * 32 - 32, Game.HEIGHT * 2 + 10 - 32, ObjectId.Block));
 		}
 	}
 }
