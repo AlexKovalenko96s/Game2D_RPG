@@ -14,9 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 
 import ua.kas.main.entity.EntityA;
@@ -88,7 +85,7 @@ public class Game extends Canvas implements Runnable {
 	public void init() {
 		spriteSheet = new SpriteSheet("res/spriteSheel.png");
 
-		playSound();
+		// playSound();
 
 		// AudioInputStream inputStream;
 		// try {
@@ -302,22 +299,23 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
-	public static synchronized void playSound() {
-		new Thread(new Runnable() {
-			// The wrapper thread is unnecessary, unless it blocks on the
-			// Clip finishing; see comments.
-			public void run() {
-				try {
-					Clip clip = AudioSystem.getClip();
-					AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("res/PokemonRuOST.mp3"));
-					clip.open(inputStream);
-					clip.start();
-				} catch (Exception e) {
-					System.err.println(e.getMessage());
-				}
-			}
-		}).start();
-	}
+	// public static synchronized void playSound() {
+	// new Thread(new Runnable() {
+	// // The wrapper thread is unnecessary, unless it blocks on the
+	// // Clip finishing; see comments.
+	// public void run() {
+	// try {
+	// Clip clip = AudioSystem.getClip();
+	// AudioInputStream inputStream = AudioSystem.getAudioInputStream(new
+	// File("res/PokemonRuOST.mp3"));
+	// clip.open(inputStream);
+	// clip.start();
+	// } catch (Exception e) {
+	// System.err.println(e.getMessage());
+	// }
+	// }
+	// }).start();
+	// }
 
 	public static void main(String[] args) {
 		Game game = new Game();
