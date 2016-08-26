@@ -1,15 +1,16 @@
 package ua.kas.main;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
 import ua.kas.main.framework.ObjectId;
+import ua.kas.main.object.Block;
 import ua.kas.main.object.Player;
 
 public class Game extends Canvas implements Runnable {
@@ -18,22 +19,32 @@ public class Game extends Canvas implements Runnable {
 
 	public static final int WIDTH = 360;
 	public static final int HEIGHT = WIDTH / 12 * 9;
-	public static final int SCALE = 3;
+	public static final int SCALE = 2;
 
 	private static final String TITLE = "Neon Platform Game Prototype";
 
 	private boolean running = false;
 
+	private BufferedImage level = null;
+	private BufferedImage background = null;
+
 	private Thread thread;
 
 	public Camera camera;
 	public Handler handler;
+	public BufferedImageLoader loader;
 
 	private void init() {
+		loader = new BufferedImageLoader();
+		level = loader.loadImage("/level.png");
+		background = loader.loadImage("/background.png");
 		handler = new Handler();
 		camera = new Camera(0, 0);
-		handler.addObject(new Player(100, 100, ObjectId.Player, handler));
-		handler.createLevel();
+
+		// handler.addObject(new Player(100, 100, ObjectId.Player, handler));
+		// handler.createLevel();
+
+		loadImageLevel(level);
 
 		this.addKeyListener(new KeyInput(handler));
 	}
@@ -98,8 +109,7 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2d = (Graphics2D) g;
 
-		g.setColor(Color.CYAN);
-		g.fillRect(0, 0, WIDTH * SCALE + 10, HEIGHT * SCALE + 10);
+		g.drawImage(background, 0, 0, null);
 
 		g2d.translate(camera.getX(), camera.getY());// begin of camera
 
@@ -109,6 +119,27 @@ public class Game extends Canvas implements Runnable {
 
 		g.dispose();
 		bs.show();
+	}
+
+	private void loadImageLevel(BufferedImage image) {
+		int w = image.getWidth();
+		int h = image.getHeight();
+
+		for (int xx = 0; xx < h; xx++) {
+			for (int yy = 0; yy < w; yy++) {
+				int pixel = image.getRGB(xx, yy);
+				int red = (pixel >> 16) & 0xff;
+				int green = (pixel >> 8) & 0xff;
+				int blue = (pixel) & 0xff;
+
+				if (red == 0 && green == 0 && blue == 0) {
+					handler.addObject(new Block(xx * 32, yy * 32, ObjectId.Block));
+				}
+				if (red == 0 && green == 0 && blue == 255) {
+					handler.addObject(new Player(xx * 32, yy * 32, ObjectId.Player, handler));
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args) {
