@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -25,10 +26,12 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 
+	public Camera camera;
 	public Handler handler;
 
 	private void init() {
 		handler = new Handler();
+		camera = new Camera(0, 0);
 		handler.addObject(new Player(100, 100, ObjectId.Player, handler));
 		handler.createLevel();
 
@@ -79,6 +82,11 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		handler.tick();
+		for (int i = 0; i < handler.object.size(); i++) {
+			if (handler.object.get(i).getId() == ObjectId.Player) {
+				camera.tick(handler.object.get(i));
+			}
+		}
 	}
 
 	private void render() {
@@ -88,11 +96,16 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D) g;
 
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, WIDTH * SCALE + 10, HEIGHT * SCALE + 10);
 
+		g2d.translate(camera.getX(), camera.getY());// begin of camera
+
 		handler.render(g);
+
+		// g2d.translate(-camera.getX(), -camera.getY());// end of camera
 
 		g.dispose();
 		bs.show();
