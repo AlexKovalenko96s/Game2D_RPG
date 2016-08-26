@@ -33,16 +33,16 @@ public class Game extends Canvas implements Runnable {
 	public Camera camera;
 	public Handler handler;
 	public BufferedImageLoader loader;
+	public Texture texture;
 
 	private void init() {
 		loader = new BufferedImageLoader();
-		level = loader.loadImage("/level.png");
 		background = loader.loadImage("/background.png");
+		level = loader.loadImage("/level.png");
+		texture = new Texture();
 		handler = new Handler();
-		camera = new Camera(0, 0);
 
-		// handler.addObject(new Player(100, 100, ObjectId.Player, handler));
-		// handler.createLevel();
+		camera = new Camera(0, 0);
 
 		loadImageLevel(level);
 
@@ -133,13 +133,20 @@ public class Game extends Canvas implements Runnable {
 				int blue = (pixel) & 0xff;
 
 				if (red == 0 && green == 0 && blue == 0) {
-					handler.addObject(new Block(xx * 32, yy * 32, ObjectId.Block));
+					handler.addObject(new Block(xx * 32, yy * 32, ObjectId.Block, this, 0));
 				}
 				if (red == 0 && green == 0 && blue == 255) {
-					handler.addObject(new Player(xx * 32, yy * 32, ObjectId.Player, handler));
+					handler.addObject(new Player(xx * 32, yy * 32, ObjectId.Player, handler, this));
+				}
+				if (red == 38 && green == 127 && blue == 0) {
+					handler.addObject(new Block(xx * 32, yy * 32, ObjectId.Block, this, 1));
 				}
 			}
 		}
+	}
+
+	public Texture getInstance() {
+		return texture;
 	}
 
 	public static void main(String[] args) {
