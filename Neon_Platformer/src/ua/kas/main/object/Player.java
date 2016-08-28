@@ -1,11 +1,10 @@
 package ua.kas.main.object;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import ua.kas.main.Animation;
 import ua.kas.main.Game;
 import ua.kas.main.Handler;
 import ua.kas.main.Texture;
@@ -23,12 +22,15 @@ public class Player extends GameObject {
 	private Handler handler;
 	private Texture texture;
 	public Game game;
+	private Animation playerWalk;
 
 	public Player(float x, float y, ObjectId id, Handler handler, Game game) {
 		super(x, y, id);
 		this.handler = handler;
 		this.game = game;
 		texture = game.getInstance();
+		playerWalk = new Animation(10, texture.player[1], texture.player[2], texture.player[3], texture.player[4],
+				texture.player[5], texture.player[6]);
 	}
 
 	@Override
@@ -43,6 +45,7 @@ public class Player extends GameObject {
 			}
 		}
 		Collision(object);
+		playerWalk.runAnimation();
 	}
 
 	private void Collision(LinkedList<GameObject> object) {
@@ -76,15 +79,18 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(texture.player[0], (int) x, (int) y, 48, 96, null);
-
+		if (velX != 0) {
+			playerWalk.drawAnimation(g, (int) x, (int) y, 48, 96);
+		} else {
+			g.drawImage(texture.player[0], (int) x, (int) y, 48, 96, null);
+		}
 		/////////// Collision
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.RED);
-		g2d.draw(getBounds());
-		g2d.draw(getBoundsDown());
-		g2d.draw(getBoundsLeft());
-		g2d.draw(getBoundsRight());
+		// Graphics2D g2d = (Graphics2D) g;
+		// g2d.setColor(Color.RED);
+		// g2d.draw(getBounds());
+		// g2d.draw(getBoundsDown());
+		// g2d.draw(getBoundsLeft());
+		// g2d.draw(getBoundsRight());
 	}
 
 	@Override
