@@ -19,24 +19,36 @@ public class Player extends GameObject {
 
 	private final float MAX_SPEED = 10;
 
+	private int facing = 1;
+	// 1 = right
+	// -1 = left
+
 	private Handler handler;
 	private Texture texture;
 	public Game game;
-	private Animation playerWalk;
+	private Animation playerWalkRight, playerWalkLeft;
 
 	public Player(float x, float y, ObjectId id, Handler handler, Game game) {
 		super(x, y, id);
 		this.handler = handler;
 		this.game = game;
 		texture = game.getInstance();
-		playerWalk = new Animation(10, texture.player[1], texture.player[2], texture.player[3], texture.player[4],
+		playerWalkRight = new Animation(10, texture.player[1], texture.player[2], texture.player[3], texture.player[4],
 				texture.player[5], texture.player[6]);
+		playerWalkLeft = new Animation(10, texture.player[8], texture.player[9], texture.player[10], texture.player[11],
+				texture.player[12], texture.player[13]);
 	}
 
 	@Override
 	public void tick(LinkedList<GameObject> object) {
 		x += velX;
 		y += velY;
+
+		if (velX < 0) {
+			facing = -1;
+		} else if (velX > 0) {
+			facing = 1;
+		}
 
 		if (falling || jumping) {
 			velY += gravity;
@@ -45,7 +57,12 @@ public class Player extends GameObject {
 			}
 		}
 		Collision(object);
-		playerWalk.runAnimation();
+		if (facing == 1) {
+			playerWalkRight.runAnimation();
+		}
+		if (facing == -1) {
+			playerWalkLeft.runAnimation();
+		}
 	}
 
 	private void Collision(LinkedList<GameObject> object) {
@@ -79,11 +96,28 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		if (velX != 0) {
-			playerWalk.drawAnimation(g, (int) x, (int) y, 48, 96);
+		if (jumping) {
+			if (facing == 1) {
+				g.drawImage(texture.player_jump[2], (int) x, (int) y, 48, 96, null);
+			} else if (facing == -1) {
+				g.drawImage(texture.player_jump[3], (int) x, (int) y, 48, 96, null);
+			}
 		} else {
-			g.drawImage(texture.player[0], (int) x, (int) y, 48, 96, null);
+			if (velX != 0) {
+				if (facing == 1) {
+					playerWalkRight.drawAnimation(g, (int) x, (int) y, 48, 96);
+				} else {
+					playerWalkLeft.drawAnimation(g, (int) x, (int) y, 48, 96);
+				}
+			} else {
+				if (facing == 1) {
+					g.drawImage(texture.player[0], (int) x, (int) y, 48, 96, null);
+				} else if (facing == -1) {
+					g.drawImage(texture.player[7], (int) x, (int) y, 48, 96, null);
+				}
+			}
 		}
+
 		/////////// Collision
 		// Graphics2D g2d = (Graphics2D) g;
 		// g2d.setColor(Color.RED);

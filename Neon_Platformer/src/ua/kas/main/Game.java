@@ -110,7 +110,6 @@ public class Game extends Canvas implements Runnable {
 		Graphics2D g2d = (Graphics2D) g;
 
 		g.drawImage(background, 0, 0, null);
-
 		g2d.translate(camera.getX(), camera.getY());// begin of camera
 
 		handler.render(g);
