@@ -13,18 +13,18 @@ public class Block extends GameObject {
 
 	private int type;
 
-	private Texture texture;
 	public Game game;
+	private Texture texture;
 
-	public Block(float x, float y, ObjectId id, Game game, int type) {
+	public Block(float x, float y, ObjectId id, int type, Game game) {
 		super(x, y, id);
 		this.type = type;
+		this.game = game;
 		texture = game.getInstance();
 	}
 
 	@Override
 	public void tick(LinkedList<GameObject> object) {
-
 	}
 
 	@Override

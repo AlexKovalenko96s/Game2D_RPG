@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import ua.kas.main.framework.ObjectId;
-import ua.kas.main.object.Block;
-import ua.kas.main.object.Player;
 
 public class Game extends Canvas implements Runnable {
 
@@ -21,12 +19,14 @@ public class Game extends Canvas implements Runnable {
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 2;
 
+	public static int LEVEL = 1;
+
 	private static final String TITLE = "Neon Platform Game Prototype";
 
 	private boolean running = false;
 
-	private BufferedImage level = null;
-	private BufferedImage background = null;
+	public BufferedImage background = null;
+	public BufferedImage level1 = null;
 
 	private Thread thread;
 
@@ -38,13 +38,12 @@ public class Game extends Canvas implements Runnable {
 	private void init() {
 		loader = new BufferedImageLoader();
 		background = loader.loadImage("/background.png");
-		level = loader.loadImage("/level.png");
+		level1 = loader.loadImage("/level.png");
 		texture = new Texture();
-		handler = new Handler();
-
 		camera = new Camera(0, 0);
+		handler = new Handler(camera, this, loader);
 
-		loadImageLevel(level);
+		handler.loadImageLevel(level1);
 
 		this.addKeyListener(new KeyInput(handler));
 	}
@@ -118,30 +117,6 @@ public class Game extends Canvas implements Runnable {
 
 		g.dispose();
 		bs.show();
-	}
-
-	private void loadImageLevel(BufferedImage image) {
-		int w = image.getWidth();
-		int h = image.getHeight();
-
-		for (int xx = 0; xx < h; xx++) {
-			for (int yy = 0; yy < w; yy++) {
-				int pixel = image.getRGB(xx, yy);
-				int red = (pixel >> 16) & 0xff;
-				int green = (pixel >> 8) & 0xff;
-				int blue = (pixel) & 0xff;
-
-				if (red == 0 && green == 0 && blue == 0) {
-					handler.addObject(new Block(xx * 32, yy * 32, ObjectId.Block, this, 0));
-				}
-				if (red == 0 && green == 0 && blue == 255) {
-					handler.addObject(new Player(xx * 32, yy * 32, ObjectId.Player, handler, this));
-				}
-				if (red == 38 && green == 127 && blue == 0) {
-					handler.addObject(new Block(xx * 32, yy * 32, ObjectId.Block, this, 1));
-				}
-			}
-		}
 	}
 
 	public Texture getInstance() {

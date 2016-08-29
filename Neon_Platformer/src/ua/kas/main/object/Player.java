@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import ua.kas.main.Animation;
+import ua.kas.main.Camera;
 import ua.kas.main.Game;
 import ua.kas.main.Handler;
 import ua.kas.main.Texture;
@@ -19,15 +20,18 @@ public class Player extends GameObject {
 
 	private final float MAX_SPEED = 10;
 
+	public Game game;
+	public Camera camera;
+
 	private Handler handler;
 	private Texture texture;
-	public Game game;
 	private Animation playerWalkRight, playerWalkLeft;
 
-	public Player(float x, float y, ObjectId id, Handler handler, Game game) {
+	public Player(float x, float y, ObjectId id, Handler handler, Camera camera, Game game) {
 		super(x, y, id);
-		this.handler = handler;
 		this.game = game;
+		this.camera = camera;
+		this.handler = handler;
 		texture = game.getInstance();
 		playerWalkRight = new Animation(10, texture.player[1], texture.player[2], texture.player[3], texture.player[4],
 				texture.player[5], texture.player[6]);
@@ -86,8 +90,14 @@ public class Player extends GameObject {
 					x = tempObject.getX() - width;
 					velX = 0;
 				}
+			} else if (tempObject.getId() == ObjectId.Flag) {
+				// switch level
+				if (getBounds().intersects(tempObject.getBounds())) {
+					handler.switchLevel();
+				}
 			}
 		}
+
 	}
 
 	@Override

@@ -8,28 +8,25 @@ import java.util.LinkedList;
 import ua.kas.main.framework.GameObject;
 import ua.kas.main.framework.ObjectId;
 
-public class Bullet extends GameObject {
+public class Flag extends GameObject {
 
-	public Bullet(float x, float y, ObjectId id, int velX) {
+	public Flag(float x, float y, ObjectId id) {
 		super(x, y, id);
-		this.velX = velX;
 	}
 
 	@Override
 	public void tick(LinkedList<GameObject> object) {
-		x += velX;
-		y += velY;
 	}
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(Color.RED);
-		g.fillRect((int) x, (int) y, 16, 16);
+		g.setColor(Color.YELLOW);
+		g.fillRect((int) x, (int) y, 32, 32);
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle((int) x, (int) y, 16, 16);
+		return new Rectangle((int) x, (int) y, 32, 32);
 	}
 
 }
