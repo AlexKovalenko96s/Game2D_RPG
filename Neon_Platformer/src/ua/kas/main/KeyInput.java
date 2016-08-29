@@ -5,8 +5,11 @@ import java.awt.event.KeyListener;
 
 import ua.kas.main.framework.GameObject;
 import ua.kas.main.framework.ObjectId;
+import ua.kas.main.object.Bullet;
 
 public class KeyInput implements KeyListener {
+
+	private boolean fire = false;
 
 	private Handler handler;
 
@@ -27,15 +30,16 @@ public class KeyInput implements KeyListener {
 				if (key == KeyEvent.VK_A) {
 					tempObject.setVelX(-5);
 				}
-				if (key == KeyEvent.VK_W) {
-					tempObject.setVelY(-5);
-				}
-				if (key == KeyEvent.VK_S) {
-					tempObject.setVelY(5);
-				}
-				if (key == KeyEvent.VK_SPACE && !tempObject.isJumping()) {
+				if (key == KeyEvent.VK_W && !tempObject.isJumping()) {
 					tempObject.setJumping(true);
 					tempObject.setVelY(-12);
+				}
+				if (key == KeyEvent.VK_SPACE) {
+					if (!fire) {
+						handler.addObject(new Bullet(tempObject.getX() + 16 + (tempObject.getFacing() * 10),
+								tempObject.getY() + 32, ObjectId.Bullet, tempObject.getFacing() * 10));
+						fire = true;
+					}
 				}
 			}
 		}
@@ -59,10 +63,10 @@ public class KeyInput implements KeyListener {
 					tempObject.setVelX(0);
 				}
 				if (key == KeyEvent.VK_W) {
-					tempObject.setVelY(0);
+
 				}
-				if (key == KeyEvent.VK_S) {
-					tempObject.setVelY(0);
+				if (key == KeyEvent.VK_SPACE) {
+					fire = false;
 				}
 			}
 		}

@@ -12,6 +12,10 @@ public abstract class GameObject {
 	protected boolean falling = true;
 	protected boolean jumping = true;
 
+	protected int facing = 1;
+	// 1 = right
+	// -1 = left
+
 	protected ObjectId id;
 
 	public GameObject(float x, float y, ObjectId id) {
@@ -72,6 +76,10 @@ public abstract class GameObject {
 
 	public void setJumping(boolean jumping) {
 		this.jumping = jumping;
+	}
+
+	public int getFacing() {
+		return facing;
 	}
 
 	public ObjectId getId() {

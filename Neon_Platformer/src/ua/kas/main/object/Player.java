@@ -19,10 +19,6 @@ public class Player extends GameObject {
 
 	private final float MAX_SPEED = 10;
 
-	private int facing = 1;
-	// 1 = right
-	// -1 = left
-
 	private Handler handler;
 	private Texture texture;
 	public Game game;
