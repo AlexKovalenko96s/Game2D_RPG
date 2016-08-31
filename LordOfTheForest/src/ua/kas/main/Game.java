@@ -3,10 +3,13 @@ package ua.kas.main;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+
+import ua.kas.main.framework.ObjectId;
 
 public class Game extends Canvas implements Runnable {
 
@@ -16,7 +19,7 @@ public class Game extends Canvas implements Runnable {
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 2;
 
-	public static int LEVEL = 1;//
+	public static int LEVEL = 1;
 
 	public final static String TITLE = "Lord of the Forest";
 
@@ -30,6 +33,7 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImageLoader loader;
 	private Texture texture;
 	private Handler handler;
+	private Camera camera;
 
 	public synchronized void start() {
 		if (running) {
@@ -43,11 +47,14 @@ public class Game extends Canvas implements Runnable {
 	public void init() {
 		loader = new BufferedImageLoader();
 		texture = new Texture();
-		handler = new Handler(this);
+		handler = new Handler(this, texture);
 		backgroundIMG = loader.loadImage("/background.png");
 		level1 = loader.loadImage("/levels/level1.png");
+		camera = new Camera(0, 0);
 
 		handler.loadImageLoad(level1);
+
+		this.addKeyListener(new KeyInput(handler));
 	}
 
 	@Override
@@ -84,7 +91,12 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void tick() {
-
+		handler.tick();
+		for (int i = 0; i < handler.object.size(); i++) {
+			if (handler.object.get(i).getId() == ObjectId.Player) {
+				camera.tick(handler.object.get(i));
+			}
+		}
 	}
 
 	public void render() {
@@ -94,8 +106,10 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D) g;
 
 		g.drawImage(backgroundIMG, 0, 0, null);
+		g2d.translate(camera.getX(), camera.getY());
 		handler.render(g);
 
 		g.dispose();

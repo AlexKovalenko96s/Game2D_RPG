@@ -10,7 +10,7 @@ public abstract class GameObject {
 	protected float velX, velY;
 
 	protected boolean jumping = false;
-	protected boolean falling = false;
+	protected boolean falling = true;
 
 	protected int facing = 1;
 	// 1 = right
