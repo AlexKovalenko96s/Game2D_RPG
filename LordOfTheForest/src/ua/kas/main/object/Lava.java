@@ -40,7 +40,8 @@ public class Lava extends GameObject {
 	public void render(Graphics g) {
 		if (type == 1) {
 			animationLavaUp.drawAnimation(g, (int) x, (int) y);
-		} else if (type == 0) {
+		}
+		if (type == 0) {
 			animationLavaDown.drawAnimation(g, (int) x, (int) y);
 		}
 	}

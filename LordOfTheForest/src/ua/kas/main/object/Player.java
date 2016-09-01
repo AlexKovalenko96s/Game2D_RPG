@@ -61,31 +61,25 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
+
 		if (jumping) {
 			if (facing == 1) {
 				g.drawImage(texture.playerJump[0], (int) x, (int) y, null);
 			} else if (facing == -1) {
 				g.drawImage(texture.playerJump[1], (int) x, (int) y, null);
 			}
-		} else {
-			if (velX != 0) {
-				if (facing == 1 && !fire) {
-					animationWalkRight.drawAnimation(g, (int) x, (int) y);
-				} else if (facing == -1 && !fire) {
-					animationWalkLeft.drawAnimation(g, (int) x, (int) y);
-				}
-
-			} else {
-				if (facing == 1 && !fire) {
-					g.drawImage(texture.player[0], (int) x, (int) y, null);
-				} else if (facing == -1 && !fire) {
-					g.drawImage(texture.player[6], (int) x, (int) y, null);
-				} else if (facing == 1 && fire) {
-					g.drawImage(texture.playerHit[0], (int) x, (int) y, null);
-				} else if (facing == -1 && fire) {
-					g.drawImage(texture.playerHit[1], (int) x - 16, (int) y, null);
-				}
-			}
+		} else if (velX != 0 && facing == 1 && !fire) {
+			animationWalkRight.drawAnimation(g, (int) x, (int) y);
+		} else if (velX != 0 && facing == -1 && !fire) {
+			animationWalkLeft.drawAnimation(g, (int) x, (int) y);
+		} else if (velX == 0 && facing == 1 && !fire) {
+			g.drawImage(texture.player[0], (int) x, (int) y, null);
+		} else if (velX == 0 && facing == -1 && !fire) {
+			g.drawImage(texture.player[6], (int) x, (int) y, null);
+		} else if (velX == 0 && facing == 1 && fire) {
+			g.drawImage(texture.playerHit[0], (int) x, (int) y, null);
+		} else if (velX == 0 && facing == -1 && fire) {
+			g.drawImage(texture.playerHit[1], (int) x - 16, (int) y, null);
 		}
 
 		// Graphics2D g2d = (Graphics2D) g;
@@ -121,6 +115,11 @@ public class Player extends GameObject {
 				if (getBoundsRight().intersects(tempObject.getBounds())) {
 					x = tempObject.getX() - WIDTH;
 					velX = 0;
+				}
+			}
+			if (tempObject.getId() == ObjectId.Lava) {
+				if (getBoundsDown().intersects(tempObject.getBounds())) {
+					System.out.println("Game Over!");
 				}
 			}
 		}

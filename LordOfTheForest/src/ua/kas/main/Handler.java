@@ -58,10 +58,10 @@ public class Handler {
 					addObject(new Player(xx * 32, yy * 32, ObjectId.Player, game, texture));
 				}
 				if (red == 255 && green == 0 && blue == 0) {// lavaUp
-					addObject(new Lava(xx * 32, yy * 32, ObjectId.LavaUp, texture, 0));
+					addObject(new Lava(xx * 32, yy * 32, ObjectId.Lava, texture, 1));
 				}
 				if (red == 100 && green == 0 && blue == 0) {// lavaUnder
-					addObject(new Lava(xx * 32, yy * 32, ObjectId.LavaUnder, texture, 0));
+					addObject(new Lava(xx * 32, yy * 32, ObjectId.Lava, texture, 0));
 				}
 			}
 		}

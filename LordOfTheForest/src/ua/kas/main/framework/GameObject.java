@@ -12,6 +12,7 @@ public abstract class GameObject {
 	protected boolean jumping = false;
 	protected boolean falling = true;
 	protected boolean fire = false;
+	protected boolean move = false;
 
 	protected int facing = 1;
 	// 1 = right
@@ -42,6 +43,14 @@ public abstract class GameObject {
 
 	public float getY() {
 		return y;
+	}
+
+	public boolean isMove() {
+		return move;
+	}
+
+	public void setMove(boolean move) {
+		this.move = move;
 	}
 
 	public void setY(float y) {
