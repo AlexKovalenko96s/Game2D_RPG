@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import ua.kas.main.framework.GameObject;
 import ua.kas.main.framework.ObjectId;
 import ua.kas.main.object.Block;
+import ua.kas.main.object.Lava;
 import ua.kas.main.object.Player;
 
 public class Handler {
@@ -55,6 +56,12 @@ public class Handler {
 				}
 				if (red == 0 && green == 0 && blue == 255) {// player
 					addObject(new Player(xx * 32, yy * 32, ObjectId.Player, game, texture));
+				}
+				if (red == 255 && green == 0 && blue == 0) {// lavaUp
+					addObject(new Lava(xx * 32, yy * 32, ObjectId.LavaUp, texture, 0));
+				}
+				if (red == 100 && green == 0 && blue == 0) {// lavaUnder
+					addObject(new Lava(xx * 32, yy * 32, ObjectId.LavaUnder, texture, 0));
 				}
 			}
 		}

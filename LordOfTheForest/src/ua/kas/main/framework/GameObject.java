@@ -11,6 +11,7 @@ public abstract class GameObject {
 
 	protected boolean jumping = false;
 	protected boolean falling = true;
+	protected boolean fire = false;
 
 	protected int facing = 1;
 	// 1 = right
@@ -93,5 +94,13 @@ public abstract class GameObject {
 
 	public void setId(ObjectId id) {
 		this.id = id;
+	}
+
+	public boolean isFire() {
+		return fire;
+	}
+
+	public void setFire(boolean fire) {
+		this.fire = fire;
 	}
 }

@@ -1,5 +1,5 @@
 package ua.kas.main.framework;
 
 public enum ObjectId {
-	Player(), Block(), Coin(), Bullet(), Lava();
+	Player(), Block(), Coin(), Bullet(), LavaUp(), LavaUnder();
 }

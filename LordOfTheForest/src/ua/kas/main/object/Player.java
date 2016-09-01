@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import ua.kas.main.Animation;
 import ua.kas.main.Game;
 import ua.kas.main.Texture;
 import ua.kas.main.framework.GameObject;
@@ -19,11 +20,16 @@ public class Player extends GameObject {
 	public Game game;
 
 	private Texture texture;
+	private Animation animationWalkRight, animationWalkLeft;
 
 	public Player(float x, float y, ObjectId id, Game game, Texture texture) {
 		super(x, y, id);
 		this.game = game;
 		this.texture = texture;
+		animationWalkRight = new Animation(10, texture.player[1], texture.player[2], texture.player[3],
+				texture.player[4], texture.player[5]);
+		animationWalkLeft = new Animation(10, texture.player[7], texture.player[8], texture.player[9],
+				texture.player[10], texture.player[11]);
 	}
 
 	@Override
@@ -45,14 +51,41 @@ public class Player extends GameObject {
 		}
 
 		collision(object);
+
+		if (facing == 1) {
+			animationWalkRight.runAnimation();
+		} else if (facing == -1) {
+			animationWalkLeft.runAnimation();
+		}
 	}
 
 	@Override
 	public void render(Graphics g) {
-		if (facing == 1) {
-			g.drawImage(texture.player[0], (int) x, (int) y, null);
-		} else if (facing == -1) {
-			g.drawImage(texture.player[6], (int) x, (int) y, null);
+		if (jumping) {
+			if (facing == 1) {
+				g.drawImage(texture.playerJump[0], (int) x, (int) y, null);
+			} else if (facing == -1) {
+				g.drawImage(texture.playerJump[1], (int) x, (int) y, null);
+			}
+		} else {
+			if (velX != 0) {
+				if (facing == 1 && !fire) {
+					animationWalkRight.drawAnimation(g, (int) x, (int) y);
+				} else if (facing == -1 && !fire) {
+					animationWalkLeft.drawAnimation(g, (int) x, (int) y);
+				}
+
+			} else {
+				if (facing == 1 && !fire) {
+					g.drawImage(texture.player[0], (int) x, (int) y, null);
+				} else if (facing == -1 && !fire) {
+					g.drawImage(texture.player[6], (int) x, (int) y, null);
+				} else if (facing == 1 && fire) {
+					g.drawImage(texture.playerHit[0], (int) x, (int) y, null);
+				} else if (facing == -1 && fire) {
+					g.drawImage(texture.playerHit[1], (int) x - 16, (int) y, null);
+				}
+			}
 		}
 
 		// Graphics2D g2d = (Graphics2D) g;
@@ -86,7 +119,7 @@ public class Player extends GameObject {
 					velX = 0;
 				}
 				if (getBoundsRight().intersects(tempObject.getBounds())) {
-					x = tempObject.getX();
+					x = tempObject.getX() - WIDTH;
 					velX = 0;
 				}
 			}
@@ -110,4 +143,11 @@ public class Player extends GameObject {
 		return new Rectangle((int) x + WIDTH - 5, (int) y + 5, 5, HEIGHT - 10);
 	}
 
+	public Rectangle getBoundsFireRight() {
+		return new Rectangle((int) x + 32, (int) y, 16, HEIGHT);
+	}
+
+	public Rectangle getBoundsFireLeft() {
+		return new Rectangle((int) x - 16, (int) y, 16, HEIGHT);
+	}
 }

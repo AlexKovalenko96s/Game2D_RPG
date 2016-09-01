@@ -7,13 +7,15 @@ public class Texture {
 	private BufferedImage blockSheet = null;
 	private BufferedImage playerSheet = null;
 	private BufferedImage playerHitSheet = null;
+	private BufferedImage playerJumpSheet = null;
 
 	public BufferedImage[] block = new BufferedImage[2];
 	public BufferedImage[] player = new BufferedImage[12];
 	public BufferedImage[] playerHit = new BufferedImage[2];
 	public BufferedImage[] lava = new BufferedImage[6];
+	public BufferedImage[] playerJump = new BufferedImage[2];
 
-	private SpriteSheet blockSpriteSheet, playerSpriteSheet, playerHitSpriteSheet;
+	private SpriteSheet blockSpriteSheet, playerSpriteSheet, playerHitSpriteSheet, playerJumpSpriteSheet;
 
 	public Texture() {
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -21,10 +23,12 @@ public class Texture {
 		blockSheet = loader.loadImage("/blockSheet.png");
 		playerSheet = loader.loadImage("/spriteSheet.png");
 		playerHitSheet = loader.loadImage("/hit.png");
+		playerJumpSheet = loader.loadImage("/jumpSpriteSheet.png");
 
 		blockSpriteSheet = new SpriteSheet(blockSheet);
 		playerSpriteSheet = new SpriteSheet(playerSheet);
 		playerHitSpriteSheet = new SpriteSheet(playerHitSheet);
+		playerJumpSpriteSheet = new SpriteSheet(playerJumpSheet);
 
 		getTextures();
 	}
@@ -56,12 +60,18 @@ public class Texture {
 		// player hit left
 		playerHit[1] = playerHitSpriteSheet.grabImage(1, 1, 48, 64);
 
-		// lava move
+		// player jump right
+		playerJump[0] = playerJumpSpriteSheet.grabImage(1, 2, 32, 64);
+
+		// player jump left
+		playerJump[1] = playerJumpSpriteSheet.grabImage(1, 1, 32, 64);
+
+		// lava up
 		lava[0] = blockSpriteSheet.grabImage(3, 1, 32, 32);
 		lava[1] = blockSpriteSheet.grabImage(4, 1, 32, 32);
 		lava[2] = blockSpriteSheet.grabImage(5, 1, 32, 32);
 
-		// lava don`t move
+		// lava under
 		lava[3] = blockSpriteSheet.grabImage(6, 1, 32, 32);
 		lava[4] = blockSpriteSheet.grabImage(7, 1, 32, 32);
 		lava[5] = blockSpriteSheet.grabImage(8, 1, 32, 32);
