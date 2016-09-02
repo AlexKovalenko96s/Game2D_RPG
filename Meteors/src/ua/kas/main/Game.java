@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import ua.kas.main.framework.ObjectId;
+import ua.kas.main.object.Player;
+
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
@@ -16,8 +19,12 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 
+	private Handler handler;
+
 	public Game() {
 		new Window(WIDTH, HEIGHT, "Meteors", this);
+		handler = new Handler();
+		handler.addObject(new Player(100, 100, ObjectId.Player));
 	}
 
 	public synchronized void start() {
@@ -71,7 +78,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-
+		handler.tick();
 	}
 
 	private void render() {
@@ -84,6 +91,7 @@ public class Game extends Canvas implements Runnable {
 
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		handler.render(g);
 
 		g.dispose();
 		bs.show();
