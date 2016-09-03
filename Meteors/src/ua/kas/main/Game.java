@@ -22,8 +22,9 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler;
 
 	public Game() {
-		new Window(WIDTH, HEIGHT, "Meteors", this);
 		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler));
+		new Window(WIDTH, HEIGHT, "Meteors", this);
 		handler.addObject(new Player(100, 100, ObjectId.Player));
 	}
 
@@ -47,6 +48,7 @@ public class Game extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+		requestFocus();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
 		double ns = 1000000000 / amountOfTicks;
