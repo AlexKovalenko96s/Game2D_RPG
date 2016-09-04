@@ -34,6 +34,9 @@ public class KeyInput implements KeyListener {
 				}
 			}
 		}
+		if (key == KeyEvent.VK_ESCAPE) {
+			System.exit(1);
+		}
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import ua.kas.main.framework.ObjectId;
+import ua.kas.main.object.BasicEnemy;
 import ua.kas.main.object.Player;
 
 public class Game extends Canvas implements Runnable {
@@ -19,13 +20,16 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 
+	private HUD hud;
 	private Handler handler;
 
 	public Game() {
 		handler = new Handler();
+		hud = new HUD();
 		this.addKeyListener(new KeyInput(handler));
 		new Window(WIDTH, HEIGHT, "Meteors", this);
-		handler.addObject(new Player(100, 100, ObjectId.Player));
+		handler.addObject(new Player(100, 100, ObjectId.Player, handler));
+		handler.addObject(new BasicEnemy(100, 100, ObjectId.BasicEnemy, handler));
 	}
 
 	public synchronized void start() {
@@ -81,6 +85,7 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		handler.tick();
+		hud.tick();
 	}
 
 	private void render() {
@@ -93,10 +98,21 @@ public class Game extends Canvas implements Runnable {
 
 		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		hud.render(g);
 		handler.render(g);
 
 		g.dispose();
 		bs.show();
+	}
+
+	public static int clamp(int var, int min, int max) {
+		if (var >= max) {
+			return var = max;
+		} else if (var <= min) {
+			return var = min;
+		} else {
+			return var;
+		}
 	}
 
 	public static void main(String[] args) {
