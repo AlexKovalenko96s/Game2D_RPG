@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
 import ua.kas.main.framework.ObjectId;
 import ua.kas.main.object.BasicEnemy;
@@ -20,16 +21,22 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 
+	private Random random;
 	private HUD hud;
 	private Handler handler;
+	private Spawn spawn;
 
 	public Game() {
+		random = new Random();
 		handler = new Handler();
 		hud = new HUD();
+		spawn = new Spawn(handler, hud);
 		this.addKeyListener(new KeyInput(handler));
 		new Window(WIDTH, HEIGHT, "Meteors", this);
+
 		handler.addObject(new Player(100, 100, ObjectId.Player, handler));
-		handler.addObject(new BasicEnemy(100, 100, ObjectId.BasicEnemy, handler));
+		handler.addObject(
+				new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT), ObjectId.BasicEnemy, handler));
 	}
 
 	public synchronized void start() {
@@ -86,6 +93,7 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		handler.tick();
 		hud.tick();
+		spawn.tick();
 	}
 
 	private void render() {
@@ -96,7 +104,7 @@ public class Game extends Canvas implements Runnable {
 		}
 		Graphics g = bs.getDrawGraphics();
 
-		g.setColor(Color.CYAN);
+		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		hud.render(g);
 		handler.render(g);

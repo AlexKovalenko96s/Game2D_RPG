@@ -1,5 +1,5 @@
 package ua.kas.main.framework;
 
 public enum ObjectId {
-	Player(), BasicEnemy(), Trail();
+	Player(), BasicEnemy(), Trail(), FastEnemy();
 }
