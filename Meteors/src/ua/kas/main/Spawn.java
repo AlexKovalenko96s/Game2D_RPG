@@ -5,6 +5,7 @@ import java.util.Random;
 import ua.kas.main.framework.ObjectId;
 import ua.kas.main.object.BasicEnemy;
 import ua.kas.main.object.FastEnemy;
+import ua.kas.main.object.SmartEnemy;
 
 public class Spawn {
 
@@ -22,7 +23,7 @@ public class Spawn {
 
 	public void tick() {
 		scoreKeep++;
-		if (scoreKeep >= 1000) {
+		if (scoreKeep >= 250) {
 			scoreKeep = 0;
 			hud.setLevel(hud.getLevel() + 1);
 
@@ -35,6 +36,9 @@ public class Spawn {
 			} else if (hud.getLevel() == 4) {
 				handler.addObject(new FastEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
 						ObjectId.FastEnemy, handler));
+			} else if (hud.getLevel() == 5) {
+				handler.addObject(new SmartEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
+						ObjectId.SmartEnemy, handler));
 			}
 		}
 	}
