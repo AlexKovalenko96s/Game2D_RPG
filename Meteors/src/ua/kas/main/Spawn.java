@@ -4,12 +4,14 @@ import java.util.Random;
 
 import ua.kas.main.framework.ObjectId;
 import ua.kas.main.object.BasicEnemy;
+import ua.kas.main.object.EnemyBoss;
 import ua.kas.main.object.FastEnemy;
 import ua.kas.main.object.SmartEnemy;
 
 public class Spawn {
 
-	private Random random;
+	public Random random;
+
 	private Handler handler;
 	private HUD hud;
 
@@ -39,6 +41,15 @@ public class Spawn {
 			} else if (hud.getLevel() == 5) {
 				handler.addObject(new SmartEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
 						ObjectId.SmartEnemy, handler));
+			} else if (hud.getLevel() == 6) {
+				handler.addObject(new FastEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
+						ObjectId.FastEnemy, handler));
+			} else if (hud.getLevel() == 7) {
+				handler.addObject(new FastEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
+						ObjectId.FastEnemy, handler));
+			} else if (hud.getLevel() == 10) {
+				handler.clearEnemy();
+				handler.addObject(new EnemyBoss((Game.WIDTH / 2) - 48, -110, ObjectId.EnemyBoss, handler));
 			}
 		}
 	}

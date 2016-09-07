@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable {
 		this.addKeyListener(new KeyInput(handler));
 		new Window(WIDTH, HEIGHT, "Meteors", this);
 
-		handler.addObject(new Player(100, 100, ObjectId.Player, handler));
+		handler.addObject(new Player((WIDTH / 2) - 16, (HEIGHT / 2) - 16, ObjectId.Player, handler));
 		handler.addObject(
 				new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT), ObjectId.BasicEnemy, handler));
 	}
