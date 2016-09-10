@@ -4,11 +4,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
-
-import ua.kas.main.framework.ObjectId;
-import ua.kas.main.object.BasicEnemy;
-import ua.kas.main.object.Player;
 
 public class Game extends Canvas implements Runnable {
 
@@ -21,22 +16,25 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 
-	private Random random;
 	private HUD hud;
 	private Handler handler;
 	private Spawn spawn;
+	private Menu menu;
+
+	public enum STATE {
+		Menu, Game, Help
+	};
+
+	public STATE gameState = STATE.Menu;
 
 	public Game() {
-		random = new Random();
 		handler = new Handler();
+		menu = new Menu(this, handler);
 		hud = new HUD();
 		spawn = new Spawn(handler, hud);
 		this.addKeyListener(new KeyInput(handler));
+		this.addMouseListener(menu);
 		new Window(WIDTH, HEIGHT, "Meteors", this);
-
-		handler.addObject(new Player((WIDTH / 2) - 16, (HEIGHT / 2) - 16, ObjectId.Player, handler));
-		handler.addObject(
-				new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT), ObjectId.BasicEnemy, handler));
 	}
 
 	public synchronized void start() {
@@ -92,8 +90,12 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		handler.tick();
-		hud.tick();
-		spawn.tick();
+		if (gameState == STATE.Game) {
+			hud.tick();
+			spawn.tick();
+		} else if (gameState == STATE.Menu) {
+			menu.tick();
+		}
 	}
 
 	private void render() {
@@ -106,8 +108,13 @@ public class Game extends Canvas implements Runnable {
 
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		hud.render(g);
-		handler.render(g);
+
+		if (gameState == STATE.Game) {
+			hud.render(g);
+			handler.render(g);
+		} else if (gameState == STATE.Menu || gameState == STATE.Help) {
+			menu.render(g);
+		}
 
 		g.dispose();
 		bs.show();
