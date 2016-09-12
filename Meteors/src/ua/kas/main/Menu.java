@@ -85,7 +85,7 @@ public class Menu implements MouseListener {
 	}
 
 	public void tick() {
-
+		// not used
 	}
 
 	public void render(Graphics g) {
