@@ -4,6 +4,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
+
+import ua.kas.main.framework.ObjectId;
+import ua.kas.main.object.MenuParticle;
 
 public class Game extends Canvas implements Runnable {
 
@@ -16,6 +20,7 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 
+	private Random random;
 	private HUD hud;
 	private Handler handler;
 	private Spawn spawn;
@@ -28,6 +33,7 @@ public class Game extends Canvas implements Runnable {
 	public STATE gameState = STATE.Menu;
 
 	public Game() {
+		random = new Random();
 		handler = new Handler();
 		menu = new Menu(this, handler);
 		hud = new HUD();
@@ -35,6 +41,16 @@ public class Game extends Canvas implements Runnable {
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(menu);
 		new Window(WIDTH, HEIGHT, "Meteors", this);
+
+		if (gameState == STATE.Game) {
+
+		} else {
+			for (int i = 0; i < 10; i++) {
+				handler.addObject(new MenuParticle(random.nextInt(WIDTH - 50), random.nextInt(HEIGHT - 50),
+						ObjectId.MenuParticle, handler));
+			}
+		}
+
 	}
 
 	public synchronized void start() {
@@ -109,9 +125,10 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
+		handler.render(g);
+
 		if (gameState == STATE.Game) {
 			hud.render(g);
-			handler.render(g);
 		} else if (gameState == STATE.Menu || gameState == STATE.Help) {
 			menu.render(g);
 		}

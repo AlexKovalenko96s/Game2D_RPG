@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import ua.kas.main.framework.GameObject;
 import ua.kas.main.framework.ObjectId;
-import ua.kas.main.object.Player;
 
 public class Handler {
 
@@ -34,11 +33,13 @@ public class Handler {
 	}
 
 	public void clearEnemy() {
-		for (int i = 0; i < object.size(); i++) {
+		int counter = object.size();
+		for (int i = 0; i < counter; i++) {
 			GameObject tempObject = object.get(i);
-			if (tempObject.getObjectId() == ObjectId.Player) {
-				object.clear();
-				addObject(new Player((int) tempObject.getX(), (int) tempObject.getY(), ObjectId.Player, this));
+			if (tempObject.getObjectId() != ObjectId.Player) {
+				removeObject(tempObject);
+				i--;
+				counter--;
 			}
 		}
 	}

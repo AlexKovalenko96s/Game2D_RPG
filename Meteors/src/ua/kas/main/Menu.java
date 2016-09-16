@@ -45,15 +45,19 @@ public class Menu implements MouseListener {
 		int my = e.getY();
 
 		if (game.gameState == STATE.Menu) {
+			// play button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 150, 200, 64)) {
 				game.gameState = STATE.Game;
 				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
+				handler.clearEnemy();
 				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT),
 						ObjectId.BasicEnemy, handler));
 			}
+			// help button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 250, 200, 64)) {
 				game.gameState = STATE.Help;
 			}
+			// quit button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
 				System.exit(1);
 			}
