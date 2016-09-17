@@ -53,4 +53,12 @@ public class Spawn {
 			}
 		}
 	}
+
+	public int getScoreKeep() {
+		return scoreKeep;
+	}
+
+	public void setScoreKeep(int scoreKeep) {
+		this.scoreKeep = scoreKeep;
+	}
 }

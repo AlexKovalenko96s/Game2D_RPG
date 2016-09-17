@@ -12,8 +12,6 @@ import ua.kas.main.framework.ObjectId;
 
 public class MenuParticle extends GameObject {
 
-	private int dir = 0;
-
 	private Handler handler;
 	private Color color;
 	private Random random;
@@ -25,13 +23,13 @@ public class MenuParticle extends GameObject {
 		width = 16;
 		height = 16;
 
-		dir = random.nextInt(2);
-		if (dir == 0) {
-			velY = 2;
-			velX = (random.nextInt(5 - (-5)) + (-5));
-		} else if (dir == 1) {
-			velX = 2;
-			velY = (random.nextInt(5 - (-5)) + (-5));
+		velX = (random.nextInt(7 - (-7)) + (-7));
+		velY = (random.nextInt(7 - (-7)) + (-7));
+		if (velX == 0) {
+			velX = 1;
+		}
+		if (velY == 0) {
+			velY = 1;
 		}
 
 		color = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));

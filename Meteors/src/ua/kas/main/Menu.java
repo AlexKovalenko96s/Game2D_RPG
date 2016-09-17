@@ -15,11 +15,11 @@ import ua.kas.main.object.Player;
 public class Menu implements MouseListener {
 
 	private Random random;
-	private Game game;
 	private Handler handler;
+	private HUD hud;
 
-	public Menu(Game game, Handler handler) {
-		this.game = game;
+	public Menu(Handler handler, HUD hud) {
+		this.hud = hud;
 		this.handler = handler;
 		random = new Random();
 	}
@@ -44,10 +44,10 @@ public class Menu implements MouseListener {
 		int mx = e.getX();
 		int my = e.getY();
 
-		if (game.gameState == STATE.Menu) {
+		if (Game.gameState == STATE.Menu) {
 			// play button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 150, 200, 64)) {
-				game.gameState = STATE.Game;
+				Game.gameState = STATE.Game;
 				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
 				handler.clearEnemy();
 				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT),
@@ -55,7 +55,7 @@ public class Menu implements MouseListener {
 			}
 			// help button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 250, 200, 64)) {
-				game.gameState = STATE.Help;
+				Game.gameState = STATE.Help;
 			}
 			// quit button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
@@ -63,17 +63,31 @@ public class Menu implements MouseListener {
 			}
 		}
 
-		if (game.gameState == STATE.Help) {
+		// back button for help
+		if (Game.gameState == STATE.Help) {
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
-				game.gameState = STATE.Menu;
+				Game.gameState = STATE.Menu;
 				return;
+			}
+		}
+
+		// button try again
+		if (Game.gameState == STATE.End) {
+			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
+				Game.gameState = STATE.Game;
+				hud.setLevel(1);
+				hud.setScore(0);
+				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
+				handler.clearEnemy();
+				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT),
+						ObjectId.BasicEnemy, handler));
 			}
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
+		// not used
 	}
 
 	private boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
@@ -93,7 +107,7 @@ public class Menu implements MouseListener {
 	}
 
 	public void render(Graphics g) {
-		if (game.gameState == STATE.Menu) {
+		if (Game.gameState == STATE.Menu) {
 			Font font1 = new Font("arial", 1, 50);
 			Font font2 = new Font("arial", 1, 30);
 			g.setFont(font1);
@@ -110,7 +124,7 @@ public class Menu implements MouseListener {
 
 			g.drawRect((Game.WIDTH / 2) - 100, 350, 200, 64);
 			g.drawString("Quit", (Game.WIDTH / 2) - 30, 350 + 40);
-		} else if (game.gameState == STATE.Help) {
+		} else if (Game.gameState == STATE.Help) {
 			Font font1 = new Font("arial", 1, 50);
 			Font font2 = new Font("arial", 1, 30);
 			Font font3 = new Font("arial", 1, 20);
@@ -124,6 +138,20 @@ public class Menu implements MouseListener {
 			g.setFont(font2);
 			g.drawRect((Game.WIDTH / 2) - 100, 350, 200, 64);
 			g.drawString("Back", (Game.WIDTH / 2) - 30, 350 + 40);
+		} else if (Game.gameState == STATE.End) {
+			Font font1 = new Font("arial", 1, 50);
+			Font font2 = new Font("arial", 1, 30);
+			Font font3 = new Font("arial", 1, 20);
+			g.setFont(font1);
+			g.setColor(Color.WHITE);
+			g.drawString("Game Over", (Game.WIDTH / 2) - 140, 70);
+
+			g.setFont(font3);
+			g.drawString("You lost with a score of: " + hud.getScore(), 175, 200);
+
+			g.setFont(font2);
+			g.drawRect((Game.WIDTH / 2) - 100, 350, 200, 64);
+			g.drawString("Try Again", (Game.WIDTH / 2) - 65, 350 + 40);
 		}
 	}
 }

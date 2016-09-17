@@ -31,8 +31,8 @@ public class SmartEnemy extends GameObject {
 		x += velX;
 		y += velY;
 
-		float diffx = x - player.getX() - 16;
-		float diffy = y - player.getY() - 16;
+		float diffx = x - player.getX() - 8;
+		float diffy = y - player.getY() - 8;
 		float distance = (float) Math
 				.sqrt((x - player.getX()) * (x - player.getX()) + (y - player.getY()) * (y - player.getY()));
 
