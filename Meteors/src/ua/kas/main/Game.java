@@ -18,8 +18,13 @@ public class Game extends Canvas implements Runnable {
 
 	private boolean running = false;
 
-	private Thread thread;
+	public static boolean paused = false;
 
+	public static int difficulty = 0;
+	// 0 = normal
+	// 1 = hard
+
+	private Thread thread;
 	private Random random;
 	private HUD hud;
 	private Handler handler;
@@ -27,7 +32,7 @@ public class Game extends Canvas implements Runnable {
 	private Menu menu;
 
 	public enum STATE {
-		Menu, Game, Help, End
+		Menu, Game, Select, Help, End
 	};
 
 	public static STATE gameState = STATE.Menu;
@@ -109,21 +114,25 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		handler.tick();
 		if (gameState == STATE.Game) {
-			hud.tick();
-			spawn.tick();
-			if (HUD.HEALTH <= 0) {
-				HUD.HEALTH = 100;
-				spawn.setScoreKeep(0);
-				gameState = STATE.End;
-				handler.clearEnemy();
-				for (int i = 0; i < 10; i++) {
-					handler.addObject(new MenuParticle(random.nextInt(WIDTH - 50), random.nextInt(HEIGHT - 50),
-							ObjectId.MenuParticle, handler));
+			if (!paused) {
+				handler.tick();
+				hud.tick();
+				spawn.tick();
+				if (HUD.HEALTH <= 0) {
+					HUD.HEALTH = 100;
+					spawn.setScoreKeep(0);
+					gameState = STATE.End;
+					handler.clearEnemy();
+					for (int i = 0; i < 10; i++) {
+						handler.addObject(new MenuParticle(random.nextInt(WIDTH - 50), random.nextInt(HEIGHT - 50),
+								ObjectId.MenuParticle, handler));
+					}
 				}
 			}
-		} else if (gameState == STATE.Menu || gameState == STATE.End) {
+		} else if (gameState == STATE.Menu || gameState == STATE.End || gameState == STATE.Select
+				|| gameState == STATE.Help) {
+			handler.tick();
 			menu.tick();
 		}
 	}
@@ -139,13 +148,17 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
+		if (paused) {
+			g.setColor(Color.WHITE);
+			g.drawString("PAUSED", 100, 100);
+		}
+
 		handler.render(g);
 
 		if (gameState == STATE.Game) {
 			hud.render(g);
-		} else if (gameState == STATE.Menu || gameState == STATE.Help) {
-			menu.render(g);
-		} else if (gameState == STATE.End) {
+		} else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.Select
+				|| gameState == STATE.End) {
 			menu.render(g);
 		}
 

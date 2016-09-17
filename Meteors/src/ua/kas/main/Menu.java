@@ -10,6 +10,7 @@ import java.util.Random;
 import ua.kas.main.Game.STATE;
 import ua.kas.main.framework.ObjectId;
 import ua.kas.main.object.BasicEnemy;
+import ua.kas.main.object.HardEnemy;
 import ua.kas.main.object.Player;
 
 public class Menu implements MouseListener {
@@ -47,12 +48,16 @@ public class Menu implements MouseListener {
 		if (Game.gameState == STATE.Menu) {
 			// play button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 150, 200, 64)) {
-				Game.gameState = STATE.Game;
-				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
-				handler.clearEnemy();
-				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
-						ObjectId.BasicEnemy, handler));
+				// Game.gameState = STATE.Game;
+				// handler.addObject(new Player((Game.WIDTH / 2) - 16,
+				// (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
+				// handler.clearEnemy();
+				// handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH -
+				// 50), random.nextInt(Game.HEIGHT - 50),
+				// ObjectId.BasicEnemy, handler));
 				AudioPlayer.getSound("clic_sound").play();
+				Game.gameState = STATE.Select;
+				return;
 			}
 			// help button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 250, 200, 64)) {
@@ -63,6 +68,35 @@ public class Menu implements MouseListener {
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
 				AudioPlayer.getSound("clic_sound").play();
 				System.exit(1);
+			}
+		}
+
+		if (Game.gameState == STATE.Select) {
+			// normal button
+			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 150, 200, 64)) {
+				Game.gameState = STATE.Game;
+				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
+				handler.clearEnemy();
+				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
+						ObjectId.BasicEnemy, handler));
+				Game.difficulty = 0;
+				AudioPlayer.getSound("clic_sound").play();
+			}
+			// hard button
+			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 250, 200, 64)) {
+				Game.gameState = STATE.Game;
+				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
+				handler.clearEnemy();
+				handler.addObject(new HardEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
+						ObjectId.BasicEnemy, handler));
+				Game.difficulty = 1;
+				AudioPlayer.getSound("clic_sound").play();
+			}
+			// back button
+			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
+				Game.gameState = STATE.Menu;
+				AudioPlayer.getSound("clic_sound").play();
+				return;
 			}
 		}
 
@@ -78,13 +112,9 @@ public class Menu implements MouseListener {
 		// button try again
 		if (Game.gameState == STATE.End) {
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
-				Game.gameState = STATE.Game;
+				Game.gameState = STATE.Select;
 				hud.setLevel(1);
 				hud.setScore(0);
-				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
-				handler.clearEnemy();
-				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
-						ObjectId.BasicEnemy, handler));
 				AudioPlayer.getSound("clic_sound").play();
 			}
 		}
@@ -157,6 +187,23 @@ public class Menu implements MouseListener {
 			g.setFont(font2);
 			g.drawRect((Game.WIDTH / 2) - 100, 350, 200, 64);
 			g.drawString("Try Again", (Game.WIDTH / 2) - 65, 350 + 40);
+		} else if (Game.gameState == STATE.Select) {
+			Font font1 = new Font("arial", 1, 50);
+			Font font2 = new Font("arial", 1, 30);
+			g.setFont(font1);
+			g.setColor(Color.WHITE);
+			g.drawString("SELECT DIFFICULTY", (Game.WIDTH / 2) - 250, 70);
+
+			g.setFont(font2);
+
+			g.drawRect((Game.WIDTH / 2) - 100, 150, 200, 64);
+			g.drawString("Normal", (Game.WIDTH / 2) - 45, 150 + 40);
+
+			g.drawRect((Game.WIDTH / 2) - 100, 250, 200, 64);
+			g.drawString("Hard", (Game.WIDTH / 2) - 30, 250 + 40);
+
+			g.drawRect((Game.WIDTH / 2) - 100, 350, 200, 64);
+			g.drawString("Back", (Game.WIDTH / 2) - 30, 350 + 40);
 		}
 	}
 }

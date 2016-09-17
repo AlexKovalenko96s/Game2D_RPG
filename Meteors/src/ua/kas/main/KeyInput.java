@@ -3,6 +3,7 @@ package ua.kas.main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import ua.kas.main.Game.STATE;
 import ua.kas.main.framework.GameObject;
 import ua.kas.main.framework.ObjectId;
 
@@ -41,6 +42,15 @@ public class KeyInput implements KeyListener {
 				if (key == KeyEvent.VK_D) {
 					tempObject.setVelX(5);
 					keyDown[3] = true;
+				}
+			}
+		}
+		if (key == KeyEvent.VK_ENTER) {
+			if (Game.gameState == STATE.Game) {
+				if (Game.paused) {
+					Game.paused = false;
+				} else if (!Game.paused) {
+					Game.paused = true;
 				}
 			}
 		}
