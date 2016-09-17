@@ -50,15 +50,18 @@ public class Menu implements MouseListener {
 				Game.gameState = STATE.Game;
 				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
 				handler.clearEnemy();
-				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT),
+				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
 						ObjectId.BasicEnemy, handler));
+				AudioPlayer.getSound("clic_sound").play();
 			}
 			// help button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 250, 200, 64)) {
 				Game.gameState = STATE.Help;
+				AudioPlayer.getSound("clic_sound").play();
 			}
 			// quit button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
+				AudioPlayer.getSound("clic_sound").play();
 				System.exit(1);
 			}
 		}
@@ -67,6 +70,7 @@ public class Menu implements MouseListener {
 		if (Game.gameState == STATE.Help) {
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
 				Game.gameState = STATE.Menu;
+				AudioPlayer.getSound("clic_sound").play();
 				return;
 			}
 		}
@@ -79,8 +83,9 @@ public class Menu implements MouseListener {
 				hud.setScore(0);
 				handler.addObject(new Player((Game.WIDTH / 2) - 16, (Game.HEIGHT / 2) - 16, ObjectId.Player, handler));
 				handler.clearEnemy();
-				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH), random.nextInt(Game.HEIGHT),
+				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
 						ObjectId.BasicEnemy, handler));
+				AudioPlayer.getSound("clic_sound").play();
 			}
 		}
 	}

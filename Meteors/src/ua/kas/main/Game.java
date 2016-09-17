@@ -40,6 +40,10 @@ public class Game extends Canvas implements Runnable {
 		spawn = new Spawn(handler, hud);
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(menu);
+
+		AudioPlayer.load();
+		AudioPlayer.getMusic("music").loop();
+
 		new Window(WIDTH, HEIGHT, "Meteors", this);
 
 		if (gameState == STATE.Game) {
