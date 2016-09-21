@@ -22,8 +22,8 @@ public class HardEnemy extends GameObject {
 		width = 16;
 		height = 16;
 
-		velY = 5;
-		velX = 5;
+		velY = 6;
+		velX = 6;
 	}
 
 	@Override
