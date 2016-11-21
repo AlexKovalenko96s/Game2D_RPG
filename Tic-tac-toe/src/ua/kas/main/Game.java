@@ -153,7 +153,6 @@ public class Game implements Initializable {
 		}
 		for (int i = 0; i < 9; i++) {
 			count = count % 2;
-			System.out.println(count);
 			if (count == 0 && turn) {
 				count++;
 			} else if (count == 1 && !turn) {
