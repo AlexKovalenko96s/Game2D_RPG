@@ -25,7 +25,7 @@ public class Controller {
 
 	public static String vs = "";
 
-	public int gameType = 0;
+	public static int gameType = 0;
 	// 0 - PvP
 	// 1 - PvE
 
