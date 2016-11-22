@@ -316,5 +316,4 @@ public class Game implements Initializable {
 			}
 		}
 	}
-
 }
