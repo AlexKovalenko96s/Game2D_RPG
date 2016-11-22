@@ -1,6 +1,7 @@
 package ua.kas.main;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -24,6 +25,8 @@ public class Game implements Initializable {
 	@FXML
 	Label vsLabel = new Label("");
 
+	private int x = 0;
+	private int y = 0;
 	private int score1 = 0;
 	private int score2 = 0;
 	private int count = 0;
@@ -34,7 +37,7 @@ public class Game implements Initializable {
 	private String playerChar2 = "✔";
 	private String lastChar = "char";
 
-	private boolean turn = true;
+	Random random = new Random();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -45,8 +48,12 @@ public class Game implements Initializable {
 			}
 		}
 		vsLabel.setText(Controller.vs + " " + score1 + " : " + score2);
-		// click();
-		clickVsComputer();
+
+		if (Controller.gameType == 0) {
+			click();
+		} else {
+			clickVsComputer();
+		}
 	}
 
 	public void click() {
@@ -66,6 +73,11 @@ public class Game implements Initializable {
 						}
 						if (check(lastChar)) {
 							JOptionPane.showMessageDialog(null, "Win " + lastChar);
+							if (lastChar.equals(playerChar1)) {
+								score1++;
+							} else {
+								score2++;
+							}
 							vsLabel.setText(Controller.vs + " " + score1 + " : " + score2);
 							for (int k = 0; k < buttons.length; k++) {
 								for (int l = 0; l < buttons[k].length; l++) {
@@ -93,11 +105,6 @@ public class Game implements Initializable {
 		for (int i = 0; i < 3; i++) {
 			if (buttons[i][0].getText() == lastChar && buttons[i][1].getText() == lastChar
 					&& buttons[i][2].getText() == lastChar) {
-				if (lastChar.equals(playerChar1)) {
-					score1++;
-				} else {
-					score2++;
-				}
 				return true;
 			}
 		}
@@ -105,32 +112,17 @@ public class Game implements Initializable {
 		for (int j = 0; j < 3; j++) {
 			if (buttons[0][j].getText() == lastChar && buttons[1][j].getText() == lastChar
 					&& buttons[2][j].getText() == lastChar) {
-				if (lastChar.equals(playerChar1)) {
-					score1++;
-				} else {
-					score2++;
-				}
 				return true;
 			}
 		}
 
 		if (buttons[0][0].getText() == lastChar && buttons[1][1].getText() == lastChar
 				&& buttons[2][2].getText() == lastChar) {
-			if (lastChar.equals(playerChar1)) {
-				score1++;
-			} else {
-				score2++;
-			}
 			return true;
 		}
 
 		if (buttons[0][2].getText() == lastChar && buttons[1][1].getText() == lastChar
 				&& buttons[2][0].getText() == lastChar) {
-			if (lastChar.equals(playerChar1)) {
-				score1++;
-			} else {
-				score2++;
-			}
 			return true;
 		}
 		return false;
@@ -142,119 +134,157 @@ public class Game implements Initializable {
 				final Button myButton = buttons[i][j];
 				myButton.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
-						if (count == 0 && "".equals(myButton.getText())) {
+						if ("".equals(myButton.getText())) {
 							myButton.setText(playerChar1);
-							lastChar = playerChar1;
-							turn = false;
+							count++;
+							if (check(playerChar1)) {
+								JOptionPane.showMessageDialog(null, "Win " + playerChar1);
+								score1++;
+								vsLabel.setText(Controller.vs + " " + score1 + " : " + score2);
+								for (int k = 0; k < buttons.length; k++) {
+									for (int l = 0; l < buttons[k].length; l++) {
+										buttons[k][l].setDisable(true);
+									}
+								}
+							}
+							if (!ai() && count != 9) {
+								x = random.nextInt(3);
+								y = random.nextInt(3);
+								while (!buttons[x][y].getText().equals("")) {
+									x = random.nextInt(3);
+									y = random.nextInt(3);
+								}
+								count++;
+								buttons[x][y].setText(playerChar2);
+							}
+							if (check(playerChar2)) {
+								JOptionPane.showMessageDialog(null, "Win " + playerChar2);
+								score2++;
+								vsLabel.setText(Controller.vs + " " + score1 + " : " + score2);
+								for (int k = 0; k < buttons.length; k++) {
+									for (int l = 0; l < buttons[k].length; l++) {
+										buttons[k][l].setDisable(true);
+									}
+								}
+							}
 						}
 					}
 				});
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			count = count % 2;
-			if (count == 0 && turn) {
-				count++;
-			} else if (count == 1 && !turn) {
-				if (!ai()) {
-					buttons[2][2].setText(playerChar2);
-
-				}
-				count++;
 			}
 		}
 	}
 
 	private boolean ai() {
 		for (int i = 0; i < 3; i++) {
-			if (buttons[i][0].getText() == playerChar1) {
+			countComputer = 0;
+			countUser = 0;
+			if (buttons[i][0].getText().equals(playerChar1)) {
 				countComputer++;
-			} else if (buttons[i][0].getText() == playerChar2) {
+			} else if (buttons[i][0].getText().equals("")) {
 				countUser++;
 			}
 
-			if (buttons[i][1].getText() == playerChar1) {
+			if (buttons[i][1].getText().equals(playerChar1)) {
 				countComputer++;
-			} else if (buttons[i][1].getText() == playerChar2) {
+			} else if (buttons[i][1].getText().equals("")) {
 				countUser++;
 			}
 
-			if (buttons[i][2].getText() == playerChar1) {
+			if (buttons[i][2].getText().equals(playerChar1)) {
 				countComputer++;
-			} else if (buttons[i][2].getText() == playerChar2) {
+			} else if (buttons[i][2].getText().equals("")) {
 				countUser++;
 			}
 
 			if (countComputer == 2 && countUser == 1) {
-				computerTurn(i, "row");
+				computerTurn(i, "col");
 				return true;
 			}
-			countComputer = 0;
-			countUser = 0;
 		}
 
 		for (int j = 0; j < 3; j++) {
-			if (buttons[0][j].getText() == playerChar1) {
+			countComputer = 0;
+			countUser = 0;
+			if (buttons[0][j].getText().equals(playerChar1)) {
 				countComputer++;
-			} else if (buttons[0][j].getText() == playerChar2) {
+			} else if (buttons[0][j].getText().equals("")) {
 				countUser++;
 			}
 
-			if (buttons[0][j].getText() == playerChar1) {
+			if (buttons[1][j].getText().equals(playerChar1)) {
 				countComputer++;
-			} else if (buttons[0][j].getText() == playerChar2) {
+			} else if (buttons[1][j].getText().equals("")) {
 				countUser++;
 			}
 
-			if (buttons[0][j].getText() == playerChar1) {
+			if (buttons[2][j].getText().equals(playerChar1)) {
 				countComputer++;
-			} else if (buttons[0][j].getText() == playerChar2) {
+			} else if (buttons[2][j].getText().equals("")) {
 				countUser++;
 			}
 
 			if (countComputer == 2 && countUser == 1) {
-				computerTurn(j, "col");
+				computerTurn(j, "row");
 				return true;
 			}
-			countComputer = 0;
-			countUser = 0;
 		}
 
-		// if (buttons[0][0].getText() == lastChar && buttons[1][1].getText() ==
-		// lastChar
-		// && buttons[2][2].getText() == lastChar) {
-		// if (lastChar.equals(playerChar1)) {
-		// score1++;
-		// } else {
-		// score2++;
-		// }
-		// return true;
-		// }
-		//
-		// if (buttons[0][2].getText() == lastChar && buttons[1][1].getText() ==
-		// lastChar
-		// && buttons[2][0].getText() == lastChar) {
-		// if (lastChar.equals(playerChar1)) {
-		// score1++;
-		// } else {
-		// score2++;
-		// }
-		// return true;
-		// }
+		for (int j = 0; j < 1; j++) {
+			countComputer = 0;
+			countUser = 0;
+			if (buttons[0][2].getText().equals(playerChar1)) {
+				countComputer++;
+			} else if (buttons[0][2].getText().equals("")) {
+				countUser++;
+			}
+
+			if (buttons[1][1].getText().equals(playerChar1)) {
+				countComputer++;
+			} else if (buttons[1][1].getText().equals("")) {
+				countUser++;
+			}
+
+			if (buttons[2][0].getText().equals(playerChar1)) {
+				countComputer++;
+			} else if (buttons[2][0].getText().equals("")) {
+				countUser++;
+			}
+
+			if (countComputer == 2 && countUser == 1) {
+				computerTurn("right");
+				return true;
+			}
+		}
+
+		countComputer = 0;
+		countUser = 0;
+
+		for (int j = 0; j < 3; j++) {
+			if (buttons[j][j].getText().equals(playerChar1)) {
+				countComputer++;
+			} else if (buttons[j][j].getText().equals("")) {
+				countUser++;
+			}
+		}
+		if (countComputer == 2 && countUser == 1) {
+			computerTurn("left");
+			return true;
+		}
 		return false;
 	}
 
 	private void computerTurn(int n, String str) {
-		if (str.equals("row")) {
+		count++;
+		if (str.equals("col")) {
 			for (int i = 0; i < 3; i++) {
-				if (buttons[n][i].getText() == "") {
+				if (buttons[n][i].getText().equals("")) {
 					buttons[n][i].setText(playerChar2);
 					return;
 				}
 			}
-		} else if (str.equals("col")) {
+		} else if (str.equals("row")) {
 			for (int i = 0; i < 3; i++) {
-				if (buttons[i][n].getText() == "") {
+				if (buttons[i][n].getText().equals("")) {
 					buttons[i][n].setText(playerChar2);
 					return;
 				}
@@ -262,4 +292,28 @@ public class Game implements Initializable {
 		}
 	}
 
+	private void computerTurn(String str) {
+		count++;
+		if (str.equals("left")) {
+			for (int i = 0; i < 3; i++) {
+				if (buttons[i][i].getText().equals("")) {
+					buttons[i][i].setText(playerChar2);
+					return;
+				}
+			}
+		} else if (str.equals("right")) {
+			if (buttons[0][2].getText().equals("")) {
+				buttons[0][2].setText(playerChar2);
+				lastChar = playerChar2;
+				return;
+			} else if (buttons[1][1].getText().equals("")) {
+				buttons[1][1].setText(playerChar2);
+				lastChar = playerChar2;
+				return;
+			} else if (buttons[2][0].getText().equals("")) {
+				buttons[2][0].setText(playerChar2);
+				return;
+			}
+		}
+	}
 }
