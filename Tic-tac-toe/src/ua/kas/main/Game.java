@@ -167,6 +167,9 @@ public class Game implements Initializable {
 									}
 								}
 							}
+							if (count == 9) {
+								JOptionPane.showMessageDialog(null, "Draw!");
+							}
 						}
 					}
 				});

@@ -2,6 +2,8 @@ package ua.kas.main;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,23 +34,31 @@ public class Controller {
 	public void PvP(ActionEvent e) throws IOException {
 		playerName1 = player1.getText();
 		playerName2 = player2.getText();
-		gameType = 0;
-		vs = playerName1 + " vs " + playerName2;
-		Scene pvp = new Scene(FXMLLoader.load(getClass().getResource("Game.fxml")));
-		pvp.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		Stage pvp_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		pvp_stage.setScene(pvp);
-		pvp_stage.show();
+		if (playerName1.equals("") || playerName2.equals("")) {
+			JOptionPane.showMessageDialog(null, "Enter correct name!");
+		} else {
+			gameType = 0;
+			vs = playerName1 + " vs " + playerName2;
+			Scene pvp = new Scene(FXMLLoader.load(getClass().getResource("Game.fxml")));
+			pvp.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage pvp_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			pvp_stage.setScene(pvp);
+			pvp_stage.show();
+		}
 	}
 
 	public void PvE(ActionEvent e) throws IOException {
 		playerName = player.getText();
 		gameType = 1;
-		vs = playerName + " vs Computer ";
-		Scene pve = new Scene(FXMLLoader.load(getClass().getResource("Game.fxml")));
-		pve.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		Stage pve_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		pve_stage.setScene(pve);
-		pve_stage.show();
+		if (playerName.equals("")) {
+			JOptionPane.showMessageDialog(null, "Enter correct name!");
+		} else {
+			vs = playerName + " vs Computer ";
+			Scene pve = new Scene(FXMLLoader.load(getClass().getResource("Game.fxml")));
+			pve.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage pve_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+			pve_stage.setScene(pve);
+			pve_stage.show();
+		}
 	}
 }
