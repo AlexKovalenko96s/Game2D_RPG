@@ -5,7 +5,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import ua.kas.main.Game.STATE;
 import ua.kas.main.framework.ObjectId;
@@ -55,18 +62,50 @@ public class Menu implements MouseListener {
 				// handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH -
 				// 50), random.nextInt(Game.HEIGHT - 50),
 				// ObjectId.BasicEnemy, handler));
-				AudioPlayer.getSound("clic_sound").play();
+
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
+
+				// AudioPlayer.getSound("clic_sound").play();
+				soundClick();
 				Game.gameState = STATE.Select;
 				return;
 			}
 			// help button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 250, 200, 64)) {
 				Game.gameState = STATE.Help;
-				AudioPlayer.getSound("clic_sound").play();
+				soundClick();
+				// AudioPlayer.getSound("clic_sound").play();
+
+				// --------
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
 			}
 			// quit button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
-				AudioPlayer.getSound("clic_sound").play();
+				soundClick();
+				// AudioPlayer.getSound("clic_sound").play();
+
+				// --------
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
+				// --------
+
 				System.exit(1);
 			}
 		}
@@ -80,7 +119,18 @@ public class Menu implements MouseListener {
 				handler.addObject(new BasicEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
 						ObjectId.BasicEnemy, handler));
 				Game.difficulty = 0;
-				AudioPlayer.getSound("clic_sound").play();
+				soundClick();
+				// AudioPlayer.getSound("clic_sound").play();
+
+				// --------
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
+				// --------
 			}
 			// hard button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 250, 200, 64)) {
@@ -90,12 +140,34 @@ public class Menu implements MouseListener {
 				handler.addObject(new HardEnemy(random.nextInt(Game.WIDTH - 50), random.nextInt(Game.HEIGHT - 50),
 						ObjectId.BasicEnemy, handler));
 				Game.difficulty = 1;
-				AudioPlayer.getSound("clic_sound").play();
+				soundClick();
+				// AudioPlayer.getSound("clic_sound").play();
+
+				// --------
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
+				// --------
 			}
 			// back button
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
 				Game.gameState = STATE.Menu;
-				AudioPlayer.getSound("clic_sound").play();
+				soundClick();
+				// AudioPlayer.getSound("clic_sound").play();
+
+				// --------
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
+				// --------
 				return;
 			}
 		}
@@ -104,7 +176,18 @@ public class Menu implements MouseListener {
 		if (Game.gameState == STATE.Help) {
 			if (mouseOver(mx, my, (Game.WIDTH / 2) - 100, 350, 200, 64)) {
 				Game.gameState = STATE.Menu;
-				AudioPlayer.getSound("clic_sound").play();
+				soundClick();
+				// AudioPlayer.getSound("clic_sound").play();
+
+				// --------
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
+				// --------
 				return;
 			}
 		}
@@ -115,7 +198,18 @@ public class Menu implements MouseListener {
 				Game.gameState = STATE.Select;
 				hud.setLevel(1);
 				hud.setScore(0);
-				AudioPlayer.getSound("clic_sound").play();
+				soundClick();
+				// AudioPlayer.getSound("clic_sound").play();
+
+				// --------
+				// try {
+				// Sound sound = new
+				// Sound(this.getClass().getResource("click.wav"));
+				// sound.play();
+				// } catch (SlickException e1) {
+				// e1.printStackTrace();
+				// }
+				// --------
 			}
 		}
 	}
@@ -204,6 +298,25 @@ public class Menu implements MouseListener {
 
 			g.drawRect((Game.WIDTH / 2) - 100, 350, 200, 64);
 			g.drawString("Back", (Game.WIDTH / 2) - 30, 350 + 40);
+		}
+	}
+
+	private void soundClick() {
+		Clip clip = null;
+		try {
+			clip = AudioSystem.getClip();
+		} catch (LineUnavailableException e1) {
+			e1.printStackTrace();
+		}
+
+		AudioInputStream inputStream;
+
+		try {
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream("click.wav"));
+			clip.open(inputStream);
+			clip.start();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
 		}
 	}
 }

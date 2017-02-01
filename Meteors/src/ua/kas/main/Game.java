@@ -4,7 +4,14 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import ua.kas.main.framework.ObjectId;
 import ua.kas.main.object.MenuParticle;
@@ -46,8 +53,23 @@ public class Game extends Canvas implements Runnable {
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(menu);
 
-		AudioPlayer.load();
-		AudioPlayer.getMusic("music").loop();
+		Clip clip = null;
+		try {
+			clip = AudioSystem.getClip();
+		} catch (LineUnavailableException e1) {
+			e1.printStackTrace();
+		}
+
+		AudioInputStream inputStream;
+
+		try {
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream("background.wav"));
+			clip.open(inputStream);
+			clip.loop(99999);
+			clip.start();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
 
 		new Window(WIDTH, HEIGHT, "Meteors", this);
 
