@@ -312,7 +312,7 @@ public class Menu implements MouseListener {
 		AudioInputStream inputStream;
 
 		try {
-			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream("click.wav"));
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("click.wav"));
 			clip.open(inputStream);
 			clip.start();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

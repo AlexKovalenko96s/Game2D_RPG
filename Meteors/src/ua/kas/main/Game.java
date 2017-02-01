@@ -63,10 +63,11 @@ public class Game extends Canvas implements Runnable {
 		AudioInputStream inputStream;
 
 		try {
-			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream("background.wav"));
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("background.wav"));
 			clip.open(inputStream);
 			clip.loop(99999);
 			clip.start();
+
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
