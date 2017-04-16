@@ -111,7 +111,6 @@ public class RacingGame extends Application {
 
 		// load car`s sprite
 		container.getChildren().addAll(car1.getGraphicsImg(), car2.getGraphicsImg());
-
 		// key pressed
 		container.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
@@ -260,12 +259,14 @@ public class RacingGame extends Application {
 				}
 			}
 		}).start();
-		
+
 		// if exit, close all stream and threads
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
 			public void handle(WindowEvent e) {
 				System.exit(1);
 			}
+
 		});
 	}
 
@@ -288,7 +289,6 @@ public class RacingGame extends Application {
 			checkPoints.add(l);
 			list.add(l);
 		}
-
 		list.addAll(statusUpdater);
 	}
 
@@ -361,8 +361,8 @@ class Car {
 		return graphics;
 	}
 
-	Polyline bounds = new Polyline(34.0, 17.0, 34.0, 7.0, 33.0, 6.0, 31.0, 4.0, 30.0, 3.0, 6.0, 3.0, 5.0, 4.0, 3.0, 6.0,
-			2.0, 7.0, 2.0, 15.0, 3.0, 16.0, 5.0, 18.0, 6.0, 19.0, 30.0, 19.0, 31.0, 18.0, 33.0, 16.0);
+	Polyline bounds = new Polyline(38.0, 17.0, 38.0, 7.0, 33.0, 6.0, 31.0, 4.0, 30.0, 3.0, 6.0, 3.0, 5.0, 4.0, 3.0, 6.0,
+			0.0, 7.0, 0.0, 17.0, 3.0, 18.0, 5.0, 20.0, 6.0, 21.0, 30.0, 21.0, 31.0, 20.0, 33.0, 18.0);
 
 	public Car(boolean primary) {
 		if (primary)
@@ -374,8 +374,8 @@ class Car {
 		graphics = new Rectangle(w, h);
 		graphics.setStroke(Color.BLACK);
 		graphics.setRotationAxis(Rotate.Z_AXIS);
-		graphics.xProperty().bind(locationX.add(w / 2));
-		graphics.yProperty().bind(locationY.multiply(-1).add(RacingGame.height - w / 2));
+		graphics.xProperty().bind(locationX.add((w / 2)));
+		graphics.yProperty().bind(locationY.multiply(-1).add((RacingGame.height - w / 2)));
 		graphicsImg.setRotationAxis(Rotate.Z_AXIS);
 		graphicsImg.xProperty().bind(graphics.xProperty());
 		graphicsImg.yProperty().bind(graphics.yProperty());
@@ -386,7 +386,6 @@ class Car {
 		graphics.setFill(Color.MEDIUMPURPLE);
 		graphics.setWidth(w);
 		graphics.setHeight(h);
-
 	}
 
 	public void translateByVector(Vector v) {
