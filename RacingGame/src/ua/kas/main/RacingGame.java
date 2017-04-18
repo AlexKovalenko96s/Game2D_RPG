@@ -94,17 +94,17 @@ public class RacingGame extends Application {
 		// set car`s parameters
 		if (server) {
 			car1.setLocationByVector(Level_01.startCar1[0] - car1.w, height - Level_01.startCar1[1]);
-			car1.setDirection(90);
+			car1.setDirection(20);
 			car2.setLocationByVector(Level_01.startCar2[0] - car2.w, height - Level_01.startCar2[1]);
-			car2.setDirection(90);
+			car2.setDirection(20);
 			car1.getGraphics().setFill(Color.MEDIUMPURPLE);
 			car2.getGraphics().setFill(Color.ORANGE);
 
 		} else {
 			car2.setLocationByVector(Level_01.startCar1[0] - car1.w, height - Level_01.startCar1[1]);
-			car2.setDirection(90);
+			car2.setDirection(20);
 			car1.setLocationByVector(Level_01.startCar2[0] - car2.w, height - Level_01.startCar2[1]);
-			car1.setDirection(90);
+			car1.setDirection(20);
 			car2.getGraphics().setFill(Color.MEDIUMPURPLE);
 			car1.getGraphics().setFill(Color.ORANGE);
 		}
