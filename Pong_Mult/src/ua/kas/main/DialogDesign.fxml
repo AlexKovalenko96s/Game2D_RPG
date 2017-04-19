@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.kas.main.Controller">
+   <children>
+      <TextField fx:id="address" layoutX="35.0" layoutY="63.0" prefHeight="25.0" prefWidth="230.0" promptText="Please enter address!">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor></TextField>
+      <Label layoutX="93.0" text="PONG" textFill="#0528fa">
+         <font>
+            <Font name="Algerian" size="46.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Label>
+      <Button layoutX="35.0" layoutY="99.0" mnemonicParsing="false" onAction="#host" prefHeight="25.0" prefWidth="100.0" text="Host">
+         <font>
+            <Font name="Times New Roman" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="161.0" layoutY="99.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="100.0" text="Player">
+         <font>
+            <Font name="Times New Roman" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
