@@ -8,18 +8,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.kas.main.Controller">
+<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="300.0" styleClass="root" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.kas.main.Controller">
    <children>
-      <TextField fx:id="address" layoutX="35.0" layoutY="63.0" prefHeight="25.0" prefWidth="230.0" promptText="Please enter address!">
+      <TextField fx:id="address" layoutX="35.0" layoutY="63.0" prefHeight="25.0" prefWidth="230.0" promptText="Please enter address!" style="-fx-background-color: #fc97c9;">
          <font>
             <Font name="Times New Roman" size="12.0" />
          </font>
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <Label layoutX="93.0" text="PONG" textFill="#0528fa">
+      <Label layoutX="93.0" layoutY="-10.0" prefHeight="60.0" prefWidth="134.0" text="Pong" textFill="AQUA">
          <font>
-            <Font name="Algerian" size="46.0" />
+            <Font name="AR HERMANN" size="57.0" />
          </font>
          <opaqueInsets>
             <Insets />
@@ -29,11 +29,17 @@
          <font>
             <Font name="Times New Roman" size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <Button layoutX="161.0" layoutY="99.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="100.0" text="Player">
          <font>
             <Font name="Times New Roman" size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
    </children>
 </AnchorPane>

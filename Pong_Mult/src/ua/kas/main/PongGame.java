@@ -90,22 +90,22 @@ public class PongGame extends Application {
 		if (server) {
 			bat1.setTranslateX(WIDTH / 2);
 			bat1.setTranslateY(HEIGHT - BAT_HEIGHT);
-			bat1.setFill(Color.RED);
+			bat1.setFill(Color.AQUA);
 
 			bat2.setTranslateX(WIDTH / 2);
 			bat2.setTranslateY(0);
-			bat2.setFill(Color.BLUE);
+			bat2.setFill(Color.HOTPINK);
 		} else {
 			bat2.setTranslateX(WIDTH / 2);
 			bat2.setTranslateY(HEIGHT - BAT_HEIGHT);
-			bat2.setFill(Color.RED);
+			bat2.setFill(Color.AQUA);
 
 			bat1.setTranslateX(WIDTH / 2);
 			bat1.setTranslateY(0);
-			bat1.setFill(Color.BLUE);
+			bat1.setFill(Color.HOTPINK);
 		}
 
-		ball.setFill(Color.CORAL);
+		ball.setFill(Color.BLACK);
 
 		scoreUp.setX(WIDTH / 2 - 10);
 		scoreUp.setY(HEIGHT / 2 - 50);
