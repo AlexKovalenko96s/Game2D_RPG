@@ -335,7 +335,8 @@ public class RacingGame extends Application {
 
 		// car crashed into the wall
 		if (CollisionDetectors.PolylineIntersection(car.bounds, linesLower)
-				|| CollisionDetectors.PolylineIntersection(car.bounds, linesUpper)) {
+				|| CollisionDetectors.PolylineIntersection(car.bounds, linesUpper)
+				|| CollisionDetectors.PolylineIntersection(car1.getBounds(), car2.getBounds())) {
 			if (!car.isColliding) {
 				car.speed *= -0.5;
 			}
@@ -424,4 +425,9 @@ class Car {
 	public ImageView getGraphicsImg() {
 		return graphicsImg;
 	}
+
+	public Polyline getBounds() {
+		return bounds;
+	}
+
 }

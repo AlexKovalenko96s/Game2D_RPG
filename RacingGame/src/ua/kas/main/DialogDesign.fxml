@@ -12,14 +12,14 @@
 
 <AnchorPane id="AnchorPane" prefHeight="206.0" prefWidth="343.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.kas.main.DialogDesignController">
    <children>
-      <ToggleButton fx:id="hostbtn" layoutX="91.0" layoutY="67.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" styleClass="togglebutton" stylesheets="@application.css" text="Host" textFill="WHITE">
+      <ToggleButton fx:id="hostbtn" layoutX="91.0" layoutY="67.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" styleClass="togglebutton" stylesheets="@application.css" text="Host" textFill="WHITE">
          <font>
             <Font name="Times New Roman" size="12.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></ToggleButton>
-      <ToggleButton fx:id="playbtn" layoutX="222.0" layoutY="67.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" styleClass="togglebutton" stylesheets="@application.css" text="Connect" textFill="WHITE">
+      <ToggleButton fx:id="playbtn" layoutX="212.0" layoutY="67.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" styleClass="togglebutton" stylesheets="@application.css" text="Connect" textFill="WHITE">
          <font>
             <Font name="Times New Roman" size="12.0" />
          </font>
@@ -34,7 +34,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
       <Separator layoutY="52.0" prefHeight="2.0" prefWidth="343.0" />
-      <Button fx:id="continuebtn" layoutX="191.0" layoutY="133.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="131.0" text="Start!" textFill="WHITE">
+      <Button fx:id="continuebtn" layoutX="191.0" layoutY="138.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="131.0" text="Start!" textFill="WHITE">
          <font>
             <Font name="Times New Roman" size="32.0" />
          </font>
